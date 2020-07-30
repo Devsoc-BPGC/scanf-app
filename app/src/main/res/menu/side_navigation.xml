@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_recent_files"
+            android:title="@string/recent_files" />
+        <item
+            android:id="@+id/nav_document_viewer"
+            android:title="@string/document_viewer" />
+
+        <item
+            android:id="@+id/nav_settings"
+            android:title="@string/settings" />
+
+    </group>
+</menu>
