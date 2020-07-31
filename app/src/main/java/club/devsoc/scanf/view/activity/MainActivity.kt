@@ -10,6 +10,11 @@ import androidx.databinding.DataBindingUtil
 import club.devsoc.scanf.R
 import club.devsoc.scanf.databinding.ActivityMainBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import android.view.MenuItem
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.drawerlayout.widget.DrawerLayout
+import club.devsoc.scanf.R
+import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -18,15 +23,37 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var qrScanButton : ImageView
     private lateinit var bottomSheet : ConstraintLayout
     private lateinit var bottomSheetBehavior : BottomSheetBehavior<ConstraintLayout>
+    var drawerLayout: DrawerLayout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+      
+      drawerLayout = findViewById(R.id.drawer_layout)
+        val navigationView = findViewById<NavigationView>(R.id.nav_view)
+        navigationView.setNavigationItemSelectedListener(this)
+        val toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        drawerLayout!!.addDrawerListener(toggle)
+        toggle.syncState()
+
+        if (savedInstanceState == null) {
+            navigationView.setCheckedItem(R.id.nav_recent_files)
+        }
 
         defineLayouts()
         initActivity()
         attachOnClickListeners()
     }
-
+  override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
+        when (menuItem.itemId) {
+            R.id.nav_settings -> {
+            }
+            R.id.nav_recent_files -> {
+            }
+            R.id.nav_document_viewer -> {
+            }
+        }
+        return true
+  }
     private fun defineLayouts(){
         //defining the main activity data binding
         mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
