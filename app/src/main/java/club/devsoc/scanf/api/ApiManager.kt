@@ -1,4 +1,3 @@
 package club.devsoc.scanf.api
 
-class ApiManager {
-}
+class ApiManager
