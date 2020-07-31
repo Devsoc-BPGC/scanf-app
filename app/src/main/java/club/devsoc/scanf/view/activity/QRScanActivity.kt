@@ -26,7 +26,7 @@ class QRScanActivity : AppCompatActivity() {
             codeScanner.startPreview();
         } else {
             EasyPermissions.requestPermissions(this,
-                "Would you like to give this app the permissions to access Camera?",
+                getString(R.string.cameraPermissionText),
                 CAMERA_PERMISSION_REQUEST_CODE, Manifest.permission.CAMERA);
         }
 
@@ -68,7 +68,12 @@ class QRScanActivity : AppCompatActivity() {
         super.onPause()
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray)
+    {
+
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="QRCornerDim">50dp</dimen>
+    <dimen name="QRBoxRadius">0dp</dimen>
+    <dimen name="QRBoxRatio">1</dimen>
+    <dimen name="QRFrameSize">0.75</dimen>
+    <dimen name="QRFrameThickness">2</dimen>
+</resources>
