@@ -3,7 +3,6 @@ package club.devsoc.scanf.view.activity
 import android.Manifest
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import club.devsoc.scanf.R
 import com.budiyev.android.codescanner.AutoFocusMode
 import com.budiyev.android.codescanner.CodeScanner
@@ -26,7 +25,7 @@ class QRScanActivity : AppCompatActivity() {
             codeScanner.startPreview();
         } else {
             EasyPermissions.requestPermissions(this,
-                getString(R.string.cameraPermissionText),
+                getString(R.string.camera_permission_text),
                 CAMERA_PERMISSION_REQUEST_CODE, Manifest.permission.CAMERA);
         }
 
