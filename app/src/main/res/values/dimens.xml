@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="bottom_sheet_padding">40dp</dimen>
+    <dimen name="bottom_sheet_padding_bottom">100dp</dimen>
+    <dimen name="bottom_sheet_buttons_dims">120sp</dimen>
+    <dimen name="main_activity_fab_dims">60dp</dimen>
+    <dimen name="main_activity_fab_margin">20dp</dimen>
+</resources>
