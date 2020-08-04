@@ -15,7 +15,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity(), View.OnClickListener,
-    NavigationView.OnNavigationItemSelectedListener {
+NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var mainBinding: ActivityMainBinding
     private lateinit var documentScanButton : ImageView
@@ -31,10 +31,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,
         attachOnClickListeners()
 
         mainBinding.navView.setNavigationItemSelectedListener(this)
-
-        val navigationView = findViewById<NavigationView>(R.id.nav_view)
-        navigationView.setNavigationItemSelectedListener(this)
-
         val toggle = ActionBarDrawerToggle(
             this,
             mainBinding.drawerLayout,
@@ -45,10 +41,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,
         toggle.syncState()
 
         if (savedInstanceState == null) {
-            mainBinding.navView.setCheckedItem(R.id.nav_recent_files)
+            mainBinding
+                .navView
+                .setCheckedItem(R.id.nav_recent_files)
         }
     }
-    override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
+    override fun onNavigationItemSelected
+                (menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
             R.id.nav_settings -> {
             }
@@ -62,9 +61,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,
 
     private fun defineLayouts() {
         // defining the main activity data binding
-        mainBinding = DataBindingUtil.setContentView(
-            this,
-            R.layout.activity_main)
+        mainBinding = DataBindingUtil
+            .setContentView(this, R.layout.activity_main)
 
         // defining the bottom sheet layout
         bottomSheet = findViewById(R.id.bottom_sheet_layout)
@@ -95,8 +93,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,
 
     // toggling bottom sheet visibility when fab is pressed
     private fun onFabClicked() {
-        if (
-            bottomSheetBehavior.state == 2 ||
+        if (bottomSheetBehavior.state == 2 ||
             bottomSheetBehavior.state == 5)
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         else
