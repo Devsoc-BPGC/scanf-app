@@ -10,10 +10,6 @@ import club.devsoc.scanf.R
 // This file can be deleted/modified in the future
 class SampleFragment : Fragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
