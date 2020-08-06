@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottom_sheet_layout"
+    android:paddingHorizontal="@dimen/bottom_sheet_padding"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:behavior_hideable="true"
+    android:paddingBottom="@dimen/bottom_sheet_padding_bottom"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <ImageView
+        android:id="@+id/qr_scan_btn"
+        android:layout_width="@dimen/bottom_sheet_buttons_dims"
+        android:layout_height="@dimen/bottom_sheet_buttons_dims"
+        android:src="@drawable/qr_code"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+        android:id="@+id/document_scan_btn"
+        android:layout_width="@dimen/bottom_sheet_buttons_dims"
+        android:layout_height="@dimen/bottom_sheet_buttons_dims"
+        android:src="@drawable/document"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
