@@ -9,6 +9,6 @@
 
 Please ensure the following and put a check accordingly
 
-- [ ] Ran tests with `./gradlew check`
+- [ ] Ran checks with `./gradlew ktlintCheck` command
 
 - [ ] Squashed multiple commits (_if irrelevant_) into one commit
