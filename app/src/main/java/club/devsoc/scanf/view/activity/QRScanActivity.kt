@@ -54,6 +54,7 @@ class QRScanActivity : AppCompatActivity() {
 
         this.scanner_view.setOnClickListener{
             codeScanner.startPreview();
+
         }
 
 
