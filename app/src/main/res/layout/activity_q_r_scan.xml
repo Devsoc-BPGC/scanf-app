@@ -15,12 +15,12 @@
         app:flashButtonColor="@android:color/white"
         app:flashButtonVisible="true"
         app:frameColor="@android:color/white"
-        app:frameCornersSize="@dimen/QRCornerDim"
-        app:frameCornersRadius="@dimen/QRBoxRadius"
-        app:frameAspectRatioWidth="@dimen/QRBoxRatio"
-        app:frameAspectRatioHeight="@dimen/QRBoxRatio"
-        app:frameSize="@dimen/QRFrameSize"
-        app:frameThickness="@dimen/QRFrameThickness"
+        app:frameCornersSize="@dimen/qr_corner_dim_50dp"
+        app:frameCornersRadius="@dimen/qr_box_radius_0dp"
+        app:frameAspectRatioWidth="@dimen/qr_box_ratio_1"
+        app:frameAspectRatioHeight="@dimen/qr_box_ratio_1"
+        app:frameSize="@dimen/qr_frame_size_0.75"
+        app:frameThickness="@dimen/qr_frame_thickness_2dp"
         app:maskColor="#77000000"/>
 
 </RelativeLayout>
