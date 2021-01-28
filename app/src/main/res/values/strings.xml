@@ -11,5 +11,7 @@
     <string name="settings">Settings</string>
     <string name="recent_files">Recent Files</string>
     <string name="document_viewer">Document Viewer</string>
+    <string name="scan_document">Scan document</string>
+    <string name="qr_scanner">QR Scanner</string>
 
 </resources>
