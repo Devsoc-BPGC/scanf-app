@@ -13,6 +13,7 @@ import club.devsoc.scanf.databinding.ActivityMainBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 
@@ -58,6 +59,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,NavigationView.On
             R.id.nav_document_viewer -> {
             }
         }
+        drawerLayout?.closeDrawer(GravityCompat.START)
         return true
     }
 
