@@ -105,6 +105,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,NavigationView.On
         startActivity(intent)
     }
 
+    private fun onDocScanClicked(){
+
+    }
+
+
 
     // whenever the user clicks anywhere on the screen, the bottom sheet is hidden
     private fun onScreenClicked() {
@@ -113,10 +118,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,NavigationView.On
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.document_scan_btn -> Toast.makeText(
-                this,
-                getString(R.string.scan_document),
-                Toast.LENGTH_SHORT).show()
+            R.id.document_scan_btn -> onDocScanClicked()
             R.id.qr_scan_btn -> onQRClicked()
             R.id.floating_action_button -> onFabClicked()
             R.id.main_activity_layout -> onScreenClicked()
