@@ -1,5 +1,6 @@
 package club.devsoc.scanf.view.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -27,9 +28,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,NavigationView.On
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        drawerLayout = findViewById(R.id.drawer_layout)
+        defineLayouts()
+
+        this.drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
-        navigationView.setNavigationItemSelectedListener(this)
+//        navigationView.setNavigationItemSelectedListener(this)
         val toggle = ActionBarDrawerToggle(
             this,
             drawerLayout,
@@ -42,7 +45,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,NavigationView.On
             navigationView.setCheckedItem(R.id.nav_recent_files)
         }
 
-        defineLayouts()
+
         initActivity()
         attachOnClickListeners()
     }
@@ -97,6 +100,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,NavigationView.On
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
     }
 
+    private fun onQRClicked(){
+        val intent = Intent(this, QRScanActivity::class.java)
+        startActivity(intent)
+    }
+
+
     // whenever the user clicks anywhere on the screen, the bottom sheet is hidden
     private fun onScreenClicked() {
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
@@ -108,10 +117,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,NavigationView.On
                 this,
                 getString(R.string.scan_document),
                 Toast.LENGTH_SHORT).show()
-            R.id.qr_scan_btn -> Toast.makeText(
-                this,
-                getString(R.string.qr_scanner),
-                Toast.LENGTH_SHORT).show()
+            R.id.qr_scan_btn -> onQRClicked()
             R.id.floating_action_button -> onFabClicked()
             R.id.main_activity_layout -> onScreenClicked()
         }
