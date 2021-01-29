@@ -108,7 +108,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,NavigationView.On
     }
 
     private fun onDocScanClicked(){
-
+        val intentDoc = Intent(this,ImageActivity::class.java)
+        startActivity(intentDoc)
     }
 
 
