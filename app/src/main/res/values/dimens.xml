@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="qr_corner_dim_50dp">50dp</dimen>
+    <dimen name="qr_box_radius_0dp">0dp</dimen>
+    <dimen name="qr_box_ratio_1">1</dimen>
+    <dimen name="qr_frame_size_0.75">0.75</dimen>
+    <dimen name="qr_frame_thickness_2dp">2dp</dimen>
+
     <dimen name="bottom_sheet_padding">40dp</dimen>
     <dimen name="bottom_sheet_padding_bottom">100dp</dimen>
     <dimen name="bottom_sheet_buttons_dims">120sp</dimen>
