@@ -7,10 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.view.View
 import android.widget.ImageView
 import androidx.core.content.FileProvider
 import club.devsoc.scanf.R
-import com.camerakit.CameraKitView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.File
 import java.io.IOException
@@ -19,8 +19,7 @@ import java.util.*
 
 class ImageActivity : AppCompatActivity() {
 
-    private lateinit var cameraView:CameraKitView
-    private lateinit var photoButton:FloatingActionButton
+
     private lateinit var addImageBtn:ImageView
     private lateinit var okBtn:ImageView
     private lateinit var imageView: ImageView
@@ -31,17 +30,18 @@ class ImageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image)
 
-//        cameraView = findViewById(R.id.camera)
 
-//        photoButton = findViewById(R.id.photoButton);
-//        photoButton.setOnClickListener(photoOnClickListener);
 
 
         initActivity()
 
+        addImageBtn.setOnClickListener(View.OnClickListener { dispatchTakePictureIntent() })
+
+
         /*on clicking photobutton
         dispatchTakePictureIntent()
         */
+
 
     }
 
