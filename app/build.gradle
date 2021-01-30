@@ -25,6 +25,10 @@ android {
         }
     }
 
+    packagingOptions {
+        pickFirst  'META-INF/*'
+    }
+
     dataBinding {
         enabled = true
     }
@@ -60,7 +64,7 @@ dependencies {
 
     //databinding compiler
 //    kapt "com.android.databinding:compiler:3.1.4"
-
+//
     //CameraViewx dependencies
     implementation "com.priyankvasa.android:cameraview-ex:3.5.5-alpha"
 
