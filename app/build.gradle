@@ -54,11 +54,8 @@ dependencies {
     // QR Code Scanner by budiyev
     implementation 'com.budiyev.android:code-scanner:2.1.0'
 
-    // For Handling permissions
+    // For Handling permission
     implementation 'pub.devrel:easypermissions:3.0.0'
-
-    //databinding compiler
-    kapt "com.android.databinding:compiler:3.1.4"
 
     //CameraViewx dependencies
     implementation "com.priyankvasa.android:cameraview-ex:3.5.5-alpha"
