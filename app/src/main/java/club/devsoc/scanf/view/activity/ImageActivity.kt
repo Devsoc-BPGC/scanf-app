@@ -13,12 +13,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import club.devsoc.scanf.BuildConfig
 import club.devsoc.scanf.R
 import club.devsoc.scanf.showDialogOK
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -42,6 +44,10 @@ class ImageActivity : AppCompatActivity() {
     val REQUEST_IMAGE_CAPTURE = 1
     lateinit var currentPhotoPath: String
 
+    var persistentImageName: String = "scanned.jpg"
+
+    private val IMAGE_CAPTURE = 10
+
     private lateinit var camera:CameraView
     private val DOCUMENT_SCAN = 20
     val REQUEST_ID_MULTIPLE_PERMISSIONS = 7
@@ -58,6 +64,20 @@ class ImageActivity : AppCompatActivity() {
             val intent = Intent(applicationContext, ScanActivity::class.java)
             intent.putExtra(ScanConstants.OPEN_INTENT_PREFERENCE, ScanConstants.OPEN_CAMERA)
             startActivityForResult(intent, DOCUMENT_SCAN)
+            Log.i("TAG", ">>>>>>>>>>>>>>>>>onClick: clicked btn")
+        })
+
+        addImageBtn.setOnClickListener(View.OnClickListener {
+            val cameraImgIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+            cameraImgIntent.putExtra(
+                MediaStore.EXTRA_OUTPUT,
+                FileProvider.getUriForFile(
+                    applicationContext, BuildConfig.APPLICATION_ID + ".fileprovider",
+                    File(applicationContext.filesDir, persistentImageName)
+                )
+            )
+            startActivityForResult(cameraImgIntent, IMAGE_CAPTURE)
         })
 
 //        camera.addCameraOpenedListener { /* Camera opened. */ }
@@ -180,12 +200,13 @@ class ImageActivity : AppCompatActivity() {
         }
 
         when(requestCode) {
-//            IMAGE_CAPTURE -> {
-//                imagePre.setImageBitmap(BitmapFactory.decodeFile("${applicationContext.filesDir}/${persistentImageName}"))
-//            }
+            IMAGE_CAPTURE -> {
+                imageView.setImageBitmap(BitmapFactory.decodeFile("${applicationContext.filesDir}/${persistentImageName}"))
+            }
 
             DOCUMENT_SCAN -> {
                 val uri: Uri = data?.extras?.getParcelable(ScanConstants.SCANNED_RESULT)!!
+                Log.i("TAG", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>onActivityResult: "+uri.toString())
                 var bitmap: Bitmap? = null
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
