@@ -80,6 +80,9 @@ class ImageActivity : AppCompatActivity() {
             startActivityForResult(cameraImgIntent, IMAGE_CAPTURE)
         })
 
+        checkAndRequestPermissions()
+
+
 //        camera.addCameraOpenedListener { /* Camera opened. */ }
 //            .addCameraErrorListener { t: Throwable, errorLevel: ErrorLevel -> /* Camera error! */ }
 //            .addCameraClosedListener { /* Camera closed. */ }
