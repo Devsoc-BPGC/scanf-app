@@ -1,6 +1,8 @@
 package club.devsoc.scanf.viewmodel
 
-class ImageActivityViewModel {
+import androidx.lifecycle.ViewModel
+
+class ImageActivityViewModel:ViewModel() {
 
 
 }
