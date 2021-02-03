@@ -23,7 +23,7 @@
         android:layout_height="100sp"
         android:id="@+id/image_activity_addimg"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="50sp"
+        android:layout_marginStart="20sp"
         android:layout_marginBottom="25dp"
         android:src="@drawable/ic_baseline_add_circle_outline_24"
         />
@@ -32,11 +32,24 @@
         android:layout_width="100sp"
         android:layout_height="100sp"
         android:id="@+id/image_activity_okbtn"
-        android:layout_marginEnd="50sp"
+        android:layout_marginEnd="20sp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="25dp"
         android:src="@drawable/ic_baseline_check_circle_outline_24"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/image_activity_save_btn"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dp"
+        android:padding="20dp"
+        android:text="Save"
+        android:textSize="20dp"
+        android:layout_toRightOf="@+id/image_activity_addimg"
+        android:layout_marginStart="40dp"
         />
 
 </RelativeLayout>

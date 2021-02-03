@@ -15,6 +15,7 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -42,10 +43,14 @@ class ImageActivity : AppCompatActivity() {
     private lateinit var addImageBtn:ImageView
     private lateinit var okBtn:ImageView
     private lateinit var imageView: ImageView
+    private lateinit var saveButton:Button
     val REQUEST_IMAGE_CAPTURE = 1
     lateinit var currentPhotoPath: String
+
     var persistentImageName: String = "scanned.jpg"
+
     private val IMAGE_CAPTURE = 10
+
     private lateinit var camera:CameraView
     private val DOCUMENT_SCAN = 20
     val REQUEST_ID_MULTIPLE_PERMISSIONS = 7
@@ -84,6 +89,10 @@ class ImageActivity : AppCompatActivity() {
                 )
             )
             startActivityForResult(cameraImgIntent, IMAGE_CAPTURE)
+        })
+
+        saveButton.setOnClickListener(View.OnClickListener {
+
         })
     }
 
@@ -208,5 +217,7 @@ class ImageActivity : AppCompatActivity() {
         okBtn=findViewById(R.id.image_activity_okbtn)
         addImageBtn=findViewById(R.id.image_activity_addimg)
         imageView=findViewById(R.id.image_activity_imgvw)
+        saveButton=findViewById(R.id.image_activity_save_btn);
+//        camera = findViewById(R.id.camera)
     }
 }
