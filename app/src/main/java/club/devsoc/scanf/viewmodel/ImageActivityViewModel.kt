@@ -14,8 +14,9 @@ class ImageActivityViewModel:ViewModel() {
 
     }
 
-    public fun getOutputFile()
+    public fun getOutputFile(file: File,isFolderCreated:Boolean)
     {
+
     }
 
 }

@@ -2,44 +2,35 @@ package club.devsoc.scanf.view.activity
 
 import android.Manifest
 import android.app.Activity
-import android.content.ActivityNotFoundException
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.graphics.*
+import android.graphics.pdf.PdfDocument
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.lifecycle.ViewModelProviders
 import club.devsoc.scanf.BuildConfig
 import club.devsoc.scanf.R
-import club.devsoc.scanf.showDialogOK
 import club.devsoc.scanf.viewmodel.ImageActivityViewModel
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.priyankvasa.android.cameraviewex.CameraView
-import com.priyankvasa.android.cameraviewex.ErrorLevel
-import com.priyankvasa.android.cameraviewex.Image
-import com.priyankvasa.android.cameraviewex.Modes
 import com.scanlibrary.ScanActivity
 import com.scanlibrary.ScanConstants
 import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 
 class ImageActivity : AppCompatActivity() {
 
@@ -100,8 +91,61 @@ class ImageActivity : AppCompatActivity() {
         })
 
         saveButton.setOnClickListener(View.OnClickListener {
-
+            createPDFWithMultipleImage()
         })
+    }
+
+    private fun createPDFWithMultipleImage()
+    {
+        var file = getOutputFile()
+        if (file != null) {
+            try {
+                val fileOutputStream = FileOutputStream(file)
+                val pdfDocument = PdfDocument()
+                for (i in 0 until uriList.size) {
+                    val bitmap = BitmapFactory.decodeFile(uriList.get(i).path)
+                    val pageInfo: PdfDocument.PageInfo = PdfDocument.PageInfo.Builder(bitmap.width, bitmap.height, i + 1).create()
+                    val page: PdfDocument.Page = pdfDocument.startPage(pageInfo)
+                    val canvas: Canvas = page.canvas
+                    val paint = Paint()
+                    paint.color = Color.BLUE
+                    canvas.drawPaint(paint)
+                    canvas.drawBitmap(bitmap, 0f, 0f, null)
+                    pdfDocument.finishPage(page)
+                    bitmap.recycle()
+                }
+                pdfDocument.writeTo(fileOutputStream)
+                pdfDocument.close()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun getOutputFile(): File?
+    {
+        var root = File(getExternalFilesDir(null), "My PDF Folder")
+        var isFolderCreated = true
+
+        if (!root.exists()){
+            isFolderCreated = root.mkdir()
+        }
+
+        if (isFolderCreated)
+        {
+//            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
+//            String imageFileName = "PDF_" + timeStamp;
+
+            var timestamp:String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
+            var imageFileName:String="PDF_"+timestamp
+            return File(root, imageFileName + ".pdf")
+        }
+        else
+        {
+            Toast.makeText(this, "Folder is not created", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+
     }
 
 
@@ -120,7 +164,7 @@ class ImageActivity : AppCompatActivity() {
             DOCUMENT_SCAN -> {
                 val uri: Uri = data?.extras?.getParcelable(ScanConstants.SCANNED_RESULT)!!
                 uriList.add(uri)
-                Log.i("TAG", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>onActivityResult: "+uri.toString())
+                Log.i("TAG", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>onActivityResult: " + uri.toString())
                 var bitmap: Bitmap? = null
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
