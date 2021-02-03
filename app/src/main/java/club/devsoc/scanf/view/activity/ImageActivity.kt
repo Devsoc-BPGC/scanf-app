@@ -34,6 +34,7 @@ import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class ImageActivity : AppCompatActivity() {
 
@@ -43,14 +44,12 @@ class ImageActivity : AppCompatActivity() {
     private lateinit var imageView: ImageView
     val REQUEST_IMAGE_CAPTURE = 1
     lateinit var currentPhotoPath: String
-
     var persistentImageName: String = "scanned.jpg"
-
     private val IMAGE_CAPTURE = 10
-
     private lateinit var camera:CameraView
     private val DOCUMENT_SCAN = 20
     val REQUEST_ID_MULTIPLE_PERMISSIONS = 7
+    private lateinit var uriList:ArrayList<Uri>
 
 
 
@@ -60,6 +59,13 @@ class ImageActivity : AppCompatActivity() {
 
         initActivity()
 
+        onClick()
+
+        checkAndRequestPermissions()
+
+    }
+
+    private fun onClick() {
         okBtn.setOnClickListener(View.OnClickListener {
             val intent = Intent(applicationContext, ScanActivity::class.java)
             intent.putExtra(ScanConstants.OPEN_INTENT_PREFERENCE, ScanConstants.OPEN_CAMERA)
@@ -79,121 +85,8 @@ class ImageActivity : AppCompatActivity() {
             )
             startActivityForResult(cameraImgIntent, IMAGE_CAPTURE)
         })
-
-        checkAndRequestPermissions()
-
-
-//        camera.addCameraOpenedListener { /* Camera opened. */ }
-//            .addCameraErrorListener { t: Throwable, errorLevel: ErrorLevel -> /* Camera error! */ }
-//            .addCameraClosedListener { /* Camera closed. */ }
-//
-//        // enable only single capture mode
-//        camera.setCameraMode(Modes.CameraMode.SINGLE_CAPTURE)
-//
-//        // OR keep other modes as is and enable single capture mode
-//        camera.enableCameraMode(Modes.CameraMode.SINGLE_CAPTURE)
-//
-//        // Output format is whatever set for [app:outputFormat] parameter
-//        // Callback on UI thread
-//        camera.addPictureTakenListener { image: Image -> /* Picture taken. */ }
-//        if (ActivityCompat.checkSelfPermission(
-//                this,
-//                Manifest.permission.CAMERA
-//            ) != PackageManager.PERMISSION_GRANTED
-//        ) {
-//            //    ActivityCompat#requestPermissions
-//            // here to request the missing permissions, and then overriding
-//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//            //                                          int[] grantResults)
-//            // to handle the case where the user grants the permission. See the documentation
-//            // for ActivityCompat#requestPermissions for more details.
-//            return
-//        }
-//        camera.capture()
-//
-//        // Disable single capture mode
-//        camera.disableCameraMode(Modes.CameraMode.SINGLE_CAPTURE)
-//
-//        //addImageBtn.setOnClickListener(View.OnClickListener { dispatchTakePictureIntent() })
-//
-//
-//        /*on clicking photobutton
-//        dispatchTakePictureIntent()
-//        */
-//
-
     }
 
-//    override fun onResume() {
-//        super.onResume()
-//        if (ActivityCompat.checkSelfPermission(
-//                this,
-//                Manifest.permission.CAMERA
-//            ) != PackageManager.PERMISSION_GRANTED
-//        ) {
-//            // TODO: Consider calling
-//            //    ActivityCompat#requestPermissions
-//            // here to request the missing permissions, and then overriding
-//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//            //                                          int[] grantResults)
-//            // to handle the case where the user grants the permission. See the documentation
-//            // for ActivityCompat#requestPermissions for more details.
-//            return
-//        }
-//        camera.start()
-//    }
-//
-//    override fun onPause() {
-//        camera.stop()
-//        super.onPause()
-//    }
-
-//    override fun onDestroyView() {
-//        camera.destroy()
-//        super.onDestroyView()
-//    }
-
-//    private fun dispatchTakePictureIntent() {
-//        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-//            // Ensure that there's a camera activity to handle the intent
-//            takePictureIntent.resolveActivity(packageManager)?.also {
-//                // Create the File where the photo should go
-//                val photoFile: File? = try {
-//                    createImageFile()
-//                } catch (ex: IOException) {
-//                    // Error occurred while creating the File
-//
-//                    null
-//                }
-//                // Continue only if the File was successfully created
-//                photoFile?.also {
-//                    val photoURI: Uri = FileProvider.getUriForFile(
-//                        this,
-//                        "com.example.android.fileprovider",
-//                        it
-//                    )
-//                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-//                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-//                }
-//            }
-//        }
-//    }
-
-
-//    @Throws(IOException::class)
-//    private fun createImageFile(): File {
-//        // Create an image file name
-//        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-//        val storageDir: File = getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
-//        return File.createTempFile(
-//            "JPEG_${timeStamp}_", /* prefix */
-//            ".jpg", /* suffix */
-//            storageDir /* directory */
-//        ).apply {
-//            // Save a file: path for use with ACTION_VIEW intents
-//            currentPhotoPath = absolutePath
-//        }
-//    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -209,6 +102,7 @@ class ImageActivity : AppCompatActivity() {
 
             DOCUMENT_SCAN -> {
                 val uri: Uri = data?.extras?.getParcelable(ScanConstants.SCANNED_RESULT)!!
+                uriList.add(uri)
                 Log.i("TAG", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>onActivityResult: "+uri.toString())
                 var bitmap: Bitmap? = null
                 try {
@@ -314,6 +208,5 @@ class ImageActivity : AppCompatActivity() {
         okBtn=findViewById(R.id.image_activity_okbtn)
         addImageBtn=findViewById(R.id.image_activity_addimg)
         imageView=findViewById(R.id.image_activity_imgvw)
-//        camera = findViewById(R.id.camera)
     }
 }
