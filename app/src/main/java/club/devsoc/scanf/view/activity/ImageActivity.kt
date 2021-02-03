@@ -24,6 +24,7 @@ import androidx.core.content.FileProvider
 import club.devsoc.scanf.BuildConfig
 import club.devsoc.scanf.R
 import club.devsoc.scanf.showDialogOK
+import club.devsoc.scanf.viewmodel.ImageActivityViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.priyankvasa.android.cameraviewex.CameraView
 import com.priyankvasa.android.cameraviewex.ErrorLevel
@@ -36,6 +37,9 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 
 class ImageActivity : AppCompatActivity() {
 
@@ -56,6 +60,8 @@ class ImageActivity : AppCompatActivity() {
     val REQUEST_ID_MULTIPLE_PERMISSIONS = 7
     private lateinit var uriList:ArrayList<Uri>
 
+    private lateinit var viewModel: ImageActivityViewModel
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,6 +69,8 @@ class ImageActivity : AppCompatActivity() {
         setContentView(R.layout.activity_image)
 
         initActivity()
+
+        setupViewModel()
 
         onClick()
 
@@ -207,6 +215,10 @@ class ImageActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun setupViewModel() {
+        viewModel = ViewModelProviders.of(this).get(ImageActivityViewModel::class.java)
     }
 
 

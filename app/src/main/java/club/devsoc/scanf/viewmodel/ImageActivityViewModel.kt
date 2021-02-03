@@ -6,6 +6,9 @@ import java.io.File
 
 class ImageActivityViewModel:ViewModel() {
 
+    init {
+
+    }
     public fun createPdf(uri: ArrayList<Uri>)
     {
 
@@ -13,7 +16,6 @@ class ImageActivityViewModel:ViewModel() {
 
     public fun getOutputFile()
     {
-        //val root: File = File(this.getExternalFilesDir(null), "My PDF Folder")
     }
 
 }
