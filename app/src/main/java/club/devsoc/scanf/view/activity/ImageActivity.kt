@@ -2,6 +2,7 @@ package club.devsoc.scanf.view.activity
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.*
@@ -23,9 +24,11 @@ import androidx.lifecycle.ViewModelProviders
 import club.devsoc.scanf.BuildConfig
 import club.devsoc.scanf.R
 import club.devsoc.scanf.viewmodel.ImageActivityViewModel
+import com.google.android.material.internal.ContextUtils.getActivity
 import com.priyankvasa.android.cameraviewex.CameraView
 import com.scanlibrary.ScanActivity
 import com.scanlibrary.ScanConstants
+import com.scanlibrary.Utils
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -51,7 +54,7 @@ class ImageActivity : AppCompatActivity() {
     private lateinit var camera:CameraView
     private val DOCUMENT_SCAN = 20
     val REQUEST_ID_MULTIPLE_PERMISSIONS = 7
-    private var uriList:ArrayList<Uri> = ArrayList()
+    private var uriList:ArrayList<String> = ArrayList()
 
     private lateinit var viewModel: ImageActivityViewModel
 
@@ -100,13 +103,21 @@ class ImageActivity : AppCompatActivity() {
     private fun createPDFWithMultipleImage()
     {
         var file = getOutputFile()
+        Log.i("TAG", ">>>>>>>>>>>>>>>>>>>>>>createPDFWithMultipleImage: " + file!!.absolutePath)
         if (file != null) {
             try {
                 var fileOutputStream = FileOutputStream(file)
                 var pdfDocument = PdfDocument()
                 for (i in 0 until uriList.size) {
-                    var bitmap = BitmapFactory.decodeFile(uriList.get(i).path)
-                    var pageInfo: PdfDocument.PageInfo = PdfDocument.PageInfo.Builder(bitmap.width, bitmap.height, i + 1).create()
+                    Log.i("TAG", ">>>>>>>>>>>>>>createPDFWithMultipleImage: "+ uriList[0])
+                    Log.i("TAG", ">>>>>>>>>>>>>>createPDFWithMultipleImage: "+ uriList.size.toString())
+
+                    var bitmap = BitmapFactory.decodeFile(uriList[i])
+                    var pageInfo: PdfDocument.PageInfo = PdfDocument.PageInfo.Builder(
+                        bitmap.width,
+                        bitmap.height,
+                        i + 1
+                    ).create()
                     var page: PdfDocument.Page = pdfDocument.startPage(pageInfo)
                     var canvas: Canvas = page.canvas
                     var paint = Paint()
@@ -165,13 +176,24 @@ class ImageActivity : AppCompatActivity() {
 
             DOCUMENT_SCAN -> {
                 val uri: Uri = data?.extras?.getParcelable(ScanConstants.SCANNED_RESULT)!!
-                uriList.add(uri)
-                numImagesTV.setText(String.format("Number of images: ",uriList.size))
-                Log.i("TAG", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>onActivityResult: "+uri.toString())
+//                uriList.add(uri)
+//                numImagesTV.setText(String.format("Number of images: %f",uriList.size))
                 var bitmap: Bitmap? = null
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
                     contentResolver.delete(uri, null, null)
+                    val sharedPref = this.getSharedPreferences("Prefs",Context.MODE_PRIVATE) ?: return
+                    val defaultValue = resources.getString(R.string.image_path)
+                    val image_path = sharedPref.getString(getString(R.string.image_path), defaultValue)
+                    with (sharedPref.edit()) {
+                        clear()
+                    }
+                    if (image_path != null) {
+                        uriList.add(image_path)
+                    }
+
+                    Log.i("TAG", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>onActivityResult: " + uri.toString())
+
                     imageView.setImageBitmap(bitmap)
                 } catch (e: IOException) {
                     e.printStackTrace()
