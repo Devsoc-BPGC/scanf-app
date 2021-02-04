@@ -6,6 +6,8 @@ import java.io.File
 
 class ImageActivityViewModel:ViewModel() {
 
+
+
     init {
 
     }

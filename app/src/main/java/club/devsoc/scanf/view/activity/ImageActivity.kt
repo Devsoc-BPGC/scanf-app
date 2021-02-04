@@ -13,6 +13,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -39,6 +40,7 @@ class ImageActivity : AppCompatActivity() {
     private lateinit var okBtn:ImageView
     private lateinit var imageView: ImageView
     private lateinit var saveButton:Button
+    private lateinit var numImagesTV:TextView
     val REQUEST_IMAGE_CAPTURE = 1
     lateinit var currentPhotoPath: String
 
@@ -49,7 +51,7 @@ class ImageActivity : AppCompatActivity() {
     private lateinit var camera:CameraView
     private val DOCUMENT_SCAN = 20
     val REQUEST_ID_MULTIPLE_PERMISSIONS = 7
-    private lateinit var uriList:ArrayList<Uri>
+    private var uriList:ArrayList<Uri> = ArrayList()
 
     private lateinit var viewModel: ImageActivityViewModel
 
@@ -164,7 +166,8 @@ class ImageActivity : AppCompatActivity() {
             DOCUMENT_SCAN -> {
                 val uri: Uri = data?.extras?.getParcelable(ScanConstants.SCANNED_RESULT)!!
                 uriList.add(uri)
-                Log.i("TAG", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>onActivityResult: " + uri.toString())
+                numImagesTV.setText(String.format("Number of images: ",uriList.size))
+                Log.i("TAG", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>onActivityResult: "+uri.toString())
                 var bitmap: Bitmap? = null
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
@@ -274,6 +277,7 @@ class ImageActivity : AppCompatActivity() {
         addImageBtn=findViewById(R.id.image_activity_addimg)
         imageView=findViewById(R.id.image_activity_imgvw)
         saveButton=findViewById(R.id.image_activity_save_btn);
+        numImagesTV=findViewById(R.id.num_of_images_txt)
 //        camera = findViewById(R.id.camera)
     }
 }

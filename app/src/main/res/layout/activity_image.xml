@@ -7,12 +7,19 @@
     android:layout_height="match_parent"
     tools:context=".view.activity.ImageActivity">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:id="@+id/num_of_images_txt"
+        android:layout_alignParentTop="true"/>
+
 
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/num_of_images_txt"
         android:id="@+id/image_activity_imgvw"
         android:layout_above="@id/image_activity_okbtn"/>
 
