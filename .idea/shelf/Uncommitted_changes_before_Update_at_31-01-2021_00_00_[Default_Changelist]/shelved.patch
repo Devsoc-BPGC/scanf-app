@@ -1,0 +1,212 @@
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>apply plugin: 'com.android.application'\r\napply plugin: 'kotlin-android'\r\napply plugin: 'kotlin-android-extensions'\r\napply plugin: 'kotlin-kapt'\r\n\r\nandroid {\r\n    compileSdkVersion 29\r\n    buildToolsVersion \"29.0.3\"\r\n\r\n    defaultConfig {\r\n        applicationId \"club.devsoc.scanf\"\r\n        minSdkVersion 21\r\n        targetSdkVersion 29\r\n        versionCode 1\r\n        versionName \"1.0\"\r\n\r\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\r\n    }\r\n\r\n    buildTypes {\r\n        release {\r\n            minifyEnabled false\r\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\r\n        }\r\n    }\r\n\r\n    dataBinding {\r\n        enabled = true\r\n    }\r\n}\r\n\r\ndependencies {\r\n    implementation fileTree(dir: \"libs\", include: [\"*.jar\"])\r\n    implementation \"org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion\"\r\n    implementation 'androidx.core:core-ktx:1.3.0'\r\n    implementation 'androidx.appcompat:appcompat:1.1.0'\r\n    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'\r\n    implementation 'androidx.legacy:legacy-support-v4:1.0.0'\r\n    testImplementation 'junit:junit:4.12'\r\n    androidTestImplementation 'androidx.test.ext:junit:1.1.1'\r\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'\r\n\r\n    // Google Material Library\r\n    implementation 'com.google.android.material:material:1.1.0-alpha09'\r\n\r\n    // For ViewModel and Livedata\r\n    implementation \"android.arch.lifecycle:extensions:$lifecycleVersion\"\r\n    kapt \"android.arch.lifecycle:compiler:$lifecycleVersion\"\r\n\r\n    // Retrofit\r\n    implementation \"com.squareup.retrofit2:retrofit:$retrofitVersion\"\r\n    implementation \"com.squareup.retrofit2:converter-gson:$retrofitVersion\"\r\n\r\n    // QR Code Scanner by budiyev\r\n    implementation 'com.budiyev.android:code-scanner:2.1.0'\r\n\r\n    // For Handling permissions\r\n    implementation 'pub.devrel:easypermissions:3.0.0'\r\n\r\n    //databinding compiler\r\n    kapt \"com.android.databinding:compiler:3.1.4\"\r\n\r\n    //CameraViewx dependencies\r\n    implementation \"com.priyankvasa.android:cameraview-ex:3.5.5-alpha\"\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/build.gradle	(revision 4ffabec25d32c620737469d6c76a7506867a68a9)
++++ app/build.gradle	(date 1612031018535)
+@@ -27,6 +27,12 @@
+     dataBinding {
+         enabled = true
+     }
++
++//    packagingOptions {
++//        pickFirst 'META-INF/kotlinx-io.kotlin_module'
++//        pickFirst 'META-INF/atomicfu.kotlin_module'
++//        pickFirst 'META-INF/kotlinx-coroutines-io.kotlin_module'
++//    }
+ }
+ 
+ dependencies {
+@@ -58,7 +64,7 @@
+     implementation 'pub.devrel:easypermissions:3.0.0'
+ 
+     //databinding compiler
+-    kapt "com.android.databinding:compiler:3.1.4"
++//    kapt "com.android.databinding:compiler:3.1.4"
+ 
+     //CameraViewx dependencies
+     implementation "com.priyankvasa.android:cameraview-ex:3.5.5-alpha"
+Index: app/src/main/java/club/devsoc/scanf/view/activity/ImageActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package club.devsoc.scanf.view.activity\r\n\r\nimport android.content.ActivityNotFoundException\r\nimport android.content.Intent\r\nimport android.net.Uri\r\nimport androidx.appcompat.app.AppCompatActivity\r\nimport android.os.Bundle\r\nimport android.os.Environment\r\nimport android.provider.MediaStore\r\nimport android.view.View\r\nimport android.widget.ImageView\r\nimport androidx.core.content.FileProvider\r\nimport club.devsoc.scanf.R\r\nimport com.google.android.material.floatingactionbutton.FloatingActionButton\r\nimport java.io.File\r\nimport java.io.IOException\r\nimport java.text.SimpleDateFormat\r\nimport java.util.*\r\n\r\nclass ImageActivity : AppCompatActivity() {\r\n\r\n\r\n    private lateinit var addImageBtn:ImageView\r\n    private lateinit var okBtn:ImageView\r\n    private lateinit var imageView: ImageView\r\n    val REQUEST_IMAGE_CAPTURE = 1\r\n    lateinit var currentPhotoPath: String\r\n\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        setContentView(R.layout.activity_image)\r\n\r\n\r\n\r\n\r\n        initActivity()\r\n\r\n//        addImageBtn.setOnClickListener(View.OnClickListener { dispatchTakePictureIntent() })\r\n\r\n\r\n        /*on clicking photobutton\r\n        dispatchTakePictureIntent()\r\n        */\r\n\r\n\r\n    }\r\n\r\n//    private fun dispatchTakePictureIntent() {\r\n//        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->\r\n//            // Ensure that there's a camera activity to handle the intent\r\n//            takePictureIntent.resolveActivity(packageManager)?.also {\r\n//                // Create the File where the photo should go\r\n//                val photoFile: File? = try {\r\n//                    createImageFile()\r\n//                } catch (ex: IOException) {\r\n//                    // Error occurred while creating the File\r\n//\r\n//                    null\r\n//                }\r\n//                // Continue only if the File was successfully created\r\n//                photoFile?.also {\r\n//                    val photoURI: Uri = FileProvider.getUriForFile(\r\n//                        this,\r\n//                        \"com.example.android.fileprovider\",\r\n//                        it\r\n//                    )\r\n//                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)\r\n//                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)\r\n//                }\r\n//            }\r\n//        }\r\n//    }\r\n\r\n\r\n//    @Throws(IOException::class)\r\n//    private fun createImageFile(): File {\r\n//        // Create an image file name\r\n//        val timeStamp: String = SimpleDateFormat(\"yyyyMMdd_HHmmss\").format(Date())\r\n//        val storageDir: File = getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!\r\n//        return File.createTempFile(\r\n//            \"JPEG_${timeStamp}_\", /* prefix */\r\n//            \".jpg\", /* suffix */\r\n//            storageDir /* directory */\r\n//        ).apply {\r\n//            // Save a file: path for use with ACTION_VIEW intents\r\n//            currentPhotoPath = absolutePath\r\n//        }\r\n//    }\r\n\r\n\r\n    private fun initActivity()\r\n    {\r\n        okBtn=findViewById(R.id.image_activity_okbtn)\r\n        addImageBtn=findViewById(R.id.image_activity_addimg)\r\n        imageView=findViewById(R.id.image_activity_imgvw)\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/club/devsoc/scanf/view/activity/ImageActivity.kt	(revision 4ffabec25d32c620737469d6c76a7506867a68a9)
++++ app/src/main/java/club/devsoc/scanf/view/activity/ImageActivity.kt	(date 1612030912104)
+@@ -1,7 +1,10 @@
+ package club.devsoc.scanf.view.activity
+ 
++import android.Manifest
+ import android.content.ActivityNotFoundException
+ import android.content.Intent
++import android.content.pm.PackageManager
++import android.graphics.Bitmap
+ import android.net.Uri
+ import androidx.appcompat.app.AppCompatActivity
+ import android.os.Bundle
+@@ -9,9 +12,14 @@
+ import android.provider.MediaStore
+ import android.view.View
+ import android.widget.ImageView
++import androidx.core.app.ActivityCompat
+ import androidx.core.content.FileProvider
+ import club.devsoc.scanf.R
+ import com.google.android.material.floatingactionbutton.FloatingActionButton
++import com.priyankvasa.android.cameraviewex.CameraView
++import com.priyankvasa.android.cameraviewex.ErrorLevel
++import com.priyankvasa.android.cameraviewex.Image
++import com.priyankvasa.android.cameraviewex.Modes
+ import java.io.File
+ import java.io.IOException
+ import java.text.SimpleDateFormat
+@@ -26,16 +34,47 @@
+     val REQUEST_IMAGE_CAPTURE = 1
+     lateinit var currentPhotoPath: String
+ 
++    private lateinit var camera:CameraView
++
+     override fun onCreate(savedInstanceState: Bundle?) {
+         super.onCreate(savedInstanceState)
+         setContentView(R.layout.activity_image)
+ 
+-
+-
+-
+         initActivity()
+ 
+-//        addImageBtn.setOnClickListener(View.OnClickListener { dispatchTakePictureIntent() })
++        camera.addCameraOpenedListener { /* Camera opened. */ }
++            .addCameraErrorListener { t: Throwable, errorLevel: ErrorLevel -> /* Camera error! */ }
++            .addCameraClosedListener { /* Camera closed. */ }
++
++        // enable only single capture mode
++        camera.setCameraMode(Modes.CameraMode.SINGLE_CAPTURE)
++
++        // OR keep other modes as is and enable single capture mode
++        camera.enableCameraMode(Modes.CameraMode.SINGLE_CAPTURE)
++
++        // Output format is whatever set for [app:outputFormat] parameter
++        // Callback on UI thread
++        camera.addPictureTakenListener { image: Image -> /* Picture taken. */ }
++        if (ActivityCompat.checkSelfPermission(
++                this,
++                Manifest.permission.CAMERA
++            ) != PackageManager.PERMISSION_GRANTED
++        ) {
++            // TODO: Consider calling
++            //    ActivityCompat#requestPermissions
++            // here to request the missing permissions, and then overriding
++            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
++            //                                          int[] grantResults)
++            // to handle the case where the user grants the permission. See the documentation
++            // for ActivityCompat#requestPermissions for more details.
++            return
++        }
++        camera.capture()
++
++        // Disable single capture mode
++        camera.disableCameraMode(Modes.CameraMode.SINGLE_CAPTURE)
++
++        //addImageBtn.setOnClickListener(View.OnClickListener { dispatchTakePictureIntent() })
+ 
+ 
+         /*on clicking photobutton
+@@ -45,6 +84,35 @@
+ 
+     }
+ 
++    override fun onResume() {
++        super.onResume()
++        if (ActivityCompat.checkSelfPermission(
++                this,
++                Manifest.permission.CAMERA
++            ) != PackageManager.PERMISSION_GRANTED
++        ) {
++            // TODO: Consider calling
++            //    ActivityCompat#requestPermissions
++            // here to request the missing permissions, and then overriding
++            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
++            //                                          int[] grantResults)
++            // to handle the case where the user grants the permission. See the documentation
++            // for ActivityCompat#requestPermissions for more details.
++            return
++        }
++        camera.start()
++    }
++
++    override fun onPause() {
++        camera.stop()
++        super.onPause()
++    }
++
++//    override fun onDestroyView() {
++//        camera.destroy()
++//        super.onDestroyView()
++//    }
++
+ //    private fun dispatchTakePictureIntent() {
+ //        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+ //            // Ensure that there's a camera activity to handle the intent
+@@ -88,10 +156,13 @@
+ //    }
+ 
+ 
++
++
+     private fun initActivity()
+     {
+         okBtn=findViewById(R.id.image_activity_okbtn)
+         addImageBtn=findViewById(R.id.image_activity_addimg)
+-        imageView=findViewById(R.id.image_activity_imgvw)
++//        imageView=findViewById(R.id.image_activity_imgvw)
++        camera = findViewById(R.id.camera)
+     }
+ }
+\ No newline at end of file
+Index: app/src/main/res/layout/activity_image.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<RelativeLayout\r\n    xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    tools:context=\".view.activity.ImageActivity\">\r\n\r\n    <ImageView\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"match_parent\"\r\n        android:layout_above=\"@id/image_activity_okbtn\"\r\n        android:id=\"@+id/image_activity_imgvw\"\r\n        />\r\n\r\n    <ImageView\r\n        android:layout_width=\"100sp\"\r\n        android:layout_height=\"100sp\"\r\n        android:id=\"@+id/image_activity_addimg\"\r\n        android:layout_alignParentBottom=\"true\"\r\n        android:layout_marginStart=\"50sp\"\r\n        android:layout_marginTop=\"25sp\"\r\n        android:src=\"@drawable/ic_baseline_add_circle_outline_24\"\r\n        />\r\n\r\n    <ImageView\r\n        android:layout_width=\"100sp\"\r\n        android:layout_height=\"100sp\"\r\n        android:id=\"@+id/image_activity_okbtn\"\r\n        android:layout_marginEnd=\"50sp\"\r\n        android:layout_alignParentBottom=\"true\"\r\n        android:layout_alignParentRight=\"true\"\r\n        android:layout_marginTop=\"25sp\"\r\n        android:src=\"@drawable/ic_baseline_check_circle_outline_24\"\r\n        />\r\n\r\n</RelativeLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_image.xml	(revision 4ffabec25d32c620737469d6c76a7506867a68a9)
++++ app/src/main/res/layout/activity_image.xml	(date 1612029871679)
+@@ -7,12 +7,29 @@
+     android:layout_height="match_parent"
+     tools:context=".view.activity.ImageActivity">
+ 
+-    <ImageView
++    <com.priyankvasa.android.cameraviewex.CameraView
++        android:id="@+id/camera"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:layout_above="@id/image_activity_okbtn"
+-        android:id="@+id/image_activity_imgvw"
+-        />
++        android:adjustViewBounds="true"
++        android:keepScreenOn="true"
++        app:aspectRatio="4:3"
++        app:autoFocus="continuous_picture"
++        app:awb="auto"
++        app:cameraMode="single_capture"
++        app:continuousFrameSize="W1440,1080"
++        app:facing="back"
++        app:flash="auto"
++        app:jpegQuality="high"
++        app:noiseReduction="high_quality"
++        app:opticalStabilization="true"
++        app:outputFormat="jpeg"
++        app:pinchToZoom="true"
++        app:shutter="short_time"
++        app:singleCaptureSize="1920,H1080"
++        app:touchToFocus="true"
++        app:zsl="true" />
+ 
+     <ImageView
+         android:layout_width="100sp"

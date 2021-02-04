@@ -1,0 +1,90 @@
+Index: app/src/main/java/club/devsoc/scanf/view/activity/ImageActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package club.devsoc.scanf.view.activity\r\n\r\nimport android.Manifest\r\nimport android.app.Activity\r\nimport android.content.ActivityNotFoundException\r\nimport android.content.DialogInterface\r\nimport android.content.Intent\r\nimport android.content.pm.PackageManager\r\nimport android.graphics.Bitmap\r\nimport android.graphics.BitmapFactory\r\nimport android.net.Uri\r\nimport androidx.appcompat.app.AppCompatActivity\r\nimport android.os.Bundle\r\nimport android.os.Environment\r\nimport android.provider.MediaStore\r\nimport android.util.Log\r\nimport android.view.View\r\nimport android.widget.Button\r\nimport android.widget.ImageView\r\nimport android.widget.Toast\r\nimport androidx.core.app.ActivityCompat\r\nimport androidx.core.content.ContextCompat\r\nimport androidx.core.content.FileProvider\r\nimport club.devsoc.scanf.BuildConfig\r\nimport club.devsoc.scanf.R\r\nimport club.devsoc.scanf.showDialogOK\r\nimport club.devsoc.scanf.viewmodel.ImageActivityViewModel\r\nimport com.google.android.material.floatingactionbutton.FloatingActionButton\r\nimport com.priyankvasa.android.cameraviewex.CameraView\r\nimport com.priyankvasa.android.cameraviewex.ErrorLevel\r\nimport com.priyankvasa.android.cameraviewex.Image\r\nimport com.priyankvasa.android.cameraviewex.Modes\r\nimport com.scanlibrary.ScanActivity\r\nimport com.scanlibrary.ScanConstants\r\nimport java.io.File\r\nimport java.io.IOException\r\nimport java.text.SimpleDateFormat\r\nimport java.util.*\r\nimport kotlin.collections.ArrayList\r\n\r\nimport androidx.lifecycle.Observer\r\nimport androidx.lifecycle.ViewModelProviders\r\n\r\nclass ImageActivity : AppCompatActivity() {\r\n\r\n\r\n    private lateinit var addImageBtn:ImageView\r\n    private lateinit var okBtn:ImageView\r\n    private lateinit var imageView: ImageView\r\n    private lateinit var saveButton:Button\r\n    val REQUEST_IMAGE_CAPTURE = 1\r\n    lateinit var currentPhotoPath: String\r\n\r\n    var persistentImageName: String = \"scanned.jpg\"\r\n\r\n    private val IMAGE_CAPTURE = 10\r\n\r\n    private lateinit var camera:CameraView\r\n    private val DOCUMENT_SCAN = 20\r\n    val REQUEST_ID_MULTIPLE_PERMISSIONS = 7\r\n    private lateinit var uriList:ArrayList<Uri>\r\n\r\n    private lateinit var viewModel: ImageActivityViewModel\r\n\r\n\r\n\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        setContentView(R.layout.activity_image)\r\n\r\n        initActivity()\r\n\r\n        setupViewModel()\r\n\r\n        onClick()\r\n\r\n        checkAndRequestPermissions()\r\n\r\n    }\r\n\r\n    private fun onClick() {\r\n        okBtn.setOnClickListener(View.OnClickListener {\r\n            val intent = Intent(applicationContext, ScanActivity::class.java)\r\n            intent.putExtra(ScanConstants.OPEN_INTENT_PREFERENCE, ScanConstants.OPEN_CAMERA)\r\n            startActivityForResult(intent, DOCUMENT_SCAN)\r\n            Log.i(\"TAG\", \">>>>>>>>>>>>>>>>>onClick: clicked btn\")\r\n        })\r\n\r\n        addImageBtn.setOnClickListener(View.OnClickListener {\r\n            val cameraImgIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)\r\n\r\n            cameraImgIntent.putExtra(\r\n                MediaStore.EXTRA_OUTPUT,\r\n                FileProvider.getUriForFile(\r\n                    applicationContext, BuildConfig.APPLICATION_ID + \".fileprovider\",\r\n                    File(applicationContext.filesDir, persistentImageName)\r\n                )\r\n            )\r\n            startActivityForResult(cameraImgIntent, IMAGE_CAPTURE)\r\n        })\r\n\r\n        saveButton.setOnClickListener(View.OnClickListener {\r\n\r\n        })\r\n    }\r\n\r\n\r\n    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {\r\n        super.onActivityResult(requestCode, resultCode, data)\r\n\r\n        if (resultCode != Activity.RESULT_OK) {\r\n            return\r\n        }\r\n\r\n        when(requestCode) {\r\n            IMAGE_CAPTURE -> {\r\n                imageView.setImageBitmap(BitmapFactory.decodeFile(\"${applicationContext.filesDir}/${persistentImageName}\"))\r\n            }\r\n\r\n            DOCUMENT_SCAN -> {\r\n                val uri: Uri = data?.extras?.getParcelable(ScanConstants.SCANNED_RESULT)!!\r\n                uriList.add(uri)\r\n                Log.i(\"TAG\", \">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>onActivityResult: \"+uri.toString())\r\n                var bitmap: Bitmap? = null\r\n                try {\r\n                    bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)\r\n                    contentResolver.delete(uri, null, null)\r\n                    imageView.setImageBitmap(bitmap)\r\n                } catch (e: IOException) {\r\n                    e.printStackTrace()\r\n                }\r\n            }\r\n        }\r\n    }\r\n\r\n    private fun checkAndRequestPermissions(): Boolean {\r\n        val camera = ContextCompat.checkSelfPermission(\r\n            applicationContext,\r\n            Manifest.permission.CAMERA\r\n        )\r\n        val readExtStorage = ContextCompat.checkSelfPermission(\r\n            applicationContext,\r\n            Manifest.permission.READ_EXTERNAL_STORAGE\r\n        )\r\n        val writeExtStorage = ContextCompat.checkSelfPermission(\r\n            applicationContext,\r\n            Manifest.permission.WRITE_EXTERNAL_STORAGE\r\n        )\r\n\r\n        val listPermissionsNeeded: MutableList<String> = ArrayList()\r\n        if (camera != PackageManager.PERMISSION_GRANTED) {\r\n            listPermissionsNeeded.add(Manifest.permission.CAMERA)\r\n        }\r\n\r\n        if (readExtStorage != PackageManager.PERMISSION_GRANTED) {\r\n            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE)\r\n        }\r\n\r\n        if (writeExtStorage != PackageManager.PERMISSION_GRANTED) {\r\n            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)\r\n        }\r\n\r\n        if (listPermissionsNeeded.isNotEmpty()) {\r\n            ActivityCompat.requestPermissions(\r\n                this,\r\n                listPermissionsNeeded.toTypedArray(),\r\n                REQUEST_ID_MULTIPLE_PERMISSIONS\r\n            )\r\n            return false\r\n        }\r\n        return true\r\n    }\r\n\r\n    override fun onRequestPermissionsResult(\r\n        requestCode: Int,\r\n        permissions: Array<out String>,\r\n        grantResults: IntArray\r\n    ) {\r\n        when (requestCode) {\r\n            REQUEST_ID_MULTIPLE_PERMISSIONS -> {\r\n                val perms: MutableMap<String, Int> = HashMap()\r\n                // Initialize the map with both permissions\r\n                perms[Manifest.permission.CAMERA] = PackageManager.PERMISSION_GRANTED\r\n\r\n                // Fill with actual results from user\r\n                if (grantResults.isNotEmpty()) {\r\n                    var i = 0\r\n                    while (i < permissions.size) {\r\n                        perms[permissions[i]] = grantResults[i]\r\n                        i++\r\n                    }\r\n\r\n                    // Check for both permissions\r\n                    if (perms[Manifest.permission.CAMERA] != PackageManager.PERMISSION_GRANTED) {\r\n                        if (ActivityCompat.shouldShowRequestPermissionRationale(\r\n                                this,\r\n                                Manifest.permission.CAMERA\r\n                            )\r\n                        ) {\r\n//                            showDialogOK(\"Camera permission required for this app\") { \"_\" , which ->\r\n//                                when (which) {\r\n//                                    DialogInterface.BUTTON_POSITIVE -> checkAndRequestPermissions()\r\n//                                    DialogInterface.BUTTON_NEGATIVE -> {\r\n//                                    }\r\n//                                }\r\n//                            }\r\n                        } else {\r\n                            Toast.makeText(\r\n                                this,\r\n                                \"Go to settings and enable permissions\",\r\n                                Toast.LENGTH_LONG\r\n                            ).show()\r\n                        }\r\n                    }\r\n                }\r\n            }\r\n        }\r\n    }\r\n\r\n    private fun setupViewModel() {\r\n        viewModel = ViewModelProviders.of(this).get(ImageActivityViewModel::class.java)\r\n    }\r\n\r\n\r\n\r\n\r\n    private fun initActivity()\r\n    {\r\n        okBtn=findViewById(R.id.image_activity_okbtn)\r\n        addImageBtn=findViewById(R.id.image_activity_addimg)\r\n        imageView=findViewById(R.id.image_activity_imgvw)\r\n        saveButton=findViewById(R.id.image_activity_save_btn);\r\n//        camera = findViewById(R.id.camera)\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/club/devsoc/scanf/view/activity/ImageActivity.kt	(revision f20063099d117a490ac9751857a9628dc8046b9c)
++++ app/src/main/java/club/devsoc/scanf/view/activity/ImageActivity.kt	(date 1612377319595)
+@@ -17,6 +17,7 @@
+ import android.view.View
+ import android.widget.Button
+ import android.widget.ImageView
++import android.widget.TextView
+ import android.widget.Toast
+ import androidx.core.app.ActivityCompat
+ import androidx.core.content.ContextCompat
+@@ -48,6 +49,7 @@
+     private lateinit var okBtn:ImageView
+     private lateinit var imageView: ImageView
+     private lateinit var saveButton:Button
++    private lateinit var numImagesTV:TextView
+     val REQUEST_IMAGE_CAPTURE = 1
+     lateinit var currentPhotoPath: String
+ 
+@@ -120,6 +122,7 @@
+             DOCUMENT_SCAN -> {
+                 val uri: Uri = data?.extras?.getParcelable(ScanConstants.SCANNED_RESULT)!!
+                 uriList.add(uri)
++                numImagesTV.setText(String.format("Number of images: ",uriList.size))
+                 Log.i("TAG", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>onActivityResult: "+uri.toString())
+                 var bitmap: Bitmap? = null
+                 try {
+@@ -230,6 +233,7 @@
+         addImageBtn=findViewById(R.id.image_activity_addimg)
+         imageView=findViewById(R.id.image_activity_imgvw)
+         saveButton=findViewById(R.id.image_activity_save_btn);
++        numImagesTV=findViewById(R.id.num_of_images_txt)
+ //        camera = findViewById(R.id.camera)
+     }
+ }
+\ No newline at end of file
+Index: app/src/main/java/club/devsoc/scanf/viewmodel/ImageActivityViewModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package club.devsoc.scanf.viewmodel\r\n\r\nimport android.net.Uri\r\nimport androidx.lifecycle.ViewModel\r\nimport java.io.File\r\n\r\nclass ImageActivityViewModel:ViewModel() {\r\n\r\n    init {\r\n\r\n    }\r\n    public fun createPdf(uri: ArrayList<Uri>)\r\n    {\r\n\r\n    }\r\n\r\n    public fun getOutputFile()\r\n    {\r\n    }\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/club/devsoc/scanf/viewmodel/ImageActivityViewModel.kt	(revision f20063099d117a490ac9751857a9628dc8046b9c)
++++ app/src/main/java/club/devsoc/scanf/viewmodel/ImageActivityViewModel.kt	(date 1612376912794)
+@@ -6,6 +6,8 @@
+ 
+ class ImageActivityViewModel:ViewModel() {
+ 
++
++
+     init {
+ 
+     }
+Index: app/src/main/res/layout/activity_image.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<RelativeLayout\r\n    xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    tools:context=\".view.activity.ImageActivity\">\r\n\r\n\r\n\r\n    <ImageView\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_alignParentTop=\"true\"\r\n        android:id=\"@+id/image_activity_imgvw\"\r\n        android:layout_above=\"@id/image_activity_okbtn\"/>\r\n\r\n\r\n\r\n    <ImageView\r\n        android:layout_width=\"100sp\"\r\n        android:layout_height=\"100sp\"\r\n        android:id=\"@+id/image_activity_addimg\"\r\n        android:layout_alignParentBottom=\"true\"\r\n        android:layout_marginStart=\"20sp\"\r\n        android:layout_marginBottom=\"25dp\"\r\n        android:src=\"@drawable/ic_baseline_add_circle_outline_24\"\r\n        />\r\n\r\n    <ImageView\r\n        android:layout_width=\"100sp\"\r\n        android:layout_height=\"100sp\"\r\n        android:id=\"@+id/image_activity_okbtn\"\r\n        android:layout_marginEnd=\"20sp\"\r\n        android:layout_alignParentBottom=\"true\"\r\n        android:layout_alignParentRight=\"true\"\r\n        android:layout_marginBottom=\"25dp\"\r\n        android:src=\"@drawable/ic_baseline_check_circle_outline_24\"\r\n        />\r\n\r\n    <Button\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:id=\"@+id/image_activity_save_btn\"\r\n        android:layout_alignParentBottom=\"true\"\r\n        android:layout_marginBottom=\"50dp\"\r\n        android:padding=\"20dp\"\r\n        android:text=\"Save\"\r\n        android:textSize=\"20dp\"\r\n        android:layout_toRightOf=\"@+id/image_activity_addimg\"\r\n        android:layout_marginStart=\"40dp\"\r\n        />\r\n\r\n</RelativeLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_image.xml	(revision f20063099d117a490ac9751857a9628dc8046b9c)
++++ app/src/main/res/layout/activity_image.xml	(date 1612377033410)
+@@ -7,12 +7,19 @@
+     android:layout_height="match_parent"
+     tools:context=".view.activity.ImageActivity">
+ 
++    <TextView
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:padding="5dp"
++        android:id="@+id/num_of_images_txt"
++        android:layout_alignParentTop="true"/>
++
+ 
+ 
+     <ImageView
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+-        android:layout_alignParentTop="true"
++        android:layout_below="@id/num_of_images_txt"
+         android:id="@+id/image_activity_imgvw"
+         android:layout_above="@id/image_activity_okbtn"/>
+ 
