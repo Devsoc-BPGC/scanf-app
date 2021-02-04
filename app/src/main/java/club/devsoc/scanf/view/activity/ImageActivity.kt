@@ -102,14 +102,14 @@ class ImageActivity : AppCompatActivity() {
         var file = getOutputFile()
         if (file != null) {
             try {
-                val fileOutputStream = FileOutputStream(file)
-                val pdfDocument = PdfDocument()
+                var fileOutputStream = FileOutputStream(file)
+                var pdfDocument = PdfDocument()
                 for (i in 0 until uriList.size) {
-                    val bitmap = BitmapFactory.decodeFile(uriList.get(i).path)
-                    val pageInfo: PdfDocument.PageInfo = PdfDocument.PageInfo.Builder(bitmap.width, bitmap.height, i + 1).create()
-                    val page: PdfDocument.Page = pdfDocument.startPage(pageInfo)
-                    val canvas: Canvas = page.canvas
-                    val paint = Paint()
+                    var bitmap = BitmapFactory.decodeFile(uriList.get(i).path)
+                    var pageInfo: PdfDocument.PageInfo = PdfDocument.PageInfo.Builder(bitmap.width, bitmap.height, i + 1).create()
+                    var page: PdfDocument.Page = pdfDocument.startPage(pageInfo)
+                    var canvas: Canvas = page.canvas
+                    var paint = Paint()
                     paint.color = Color.BLUE
                     canvas.drawPaint(paint)
                     canvas.drawBitmap(bitmap, 0f, 0f, null)
