@@ -153,6 +153,7 @@ public class PickImageFragment extends Fragment {
         SharedPreferences sharedPref = getActivity().getSharedPreferences("Prefs",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(getString(R.string.image_path), fileUri.getPath().toString());
+        editor.putString("image_name","IMG_" + timeStamp + ".jpg");
         editor.apply();
 
         Log.i("TAG", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>createImageFile: "+fileUri.getPath().toString());

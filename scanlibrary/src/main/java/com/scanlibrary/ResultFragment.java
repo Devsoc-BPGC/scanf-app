@@ -3,17 +3,24 @@ package com.scanlibrary;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
 
 import java.io.IOException;
 
@@ -85,6 +92,7 @@ public class ResultFragment extends Fragment {
         public void onClick(View v) {
             showProgressDialog(getResources().getString(R.string.loading));
             AsyncTask.execute(new Runnable() {
+                @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void run() {
                     try {
@@ -93,7 +101,12 @@ public class ResultFragment extends Fragment {
                         if (bitmap == null) {
                             bitmap = original;
                         }
+                        SharedPreferences sharedPref = getActivity().getSharedPreferences("Prefs", Context.MODE_PRIVATE);
+                        String path = sharedPref.getString("image_name","image_name");
+
+//                        MediaStore.Images.Media.insertImage(getContext().getContentResolver(),ScanConstants.IMAGE_PATH,path,path);
                         Uri uri = Utils.getUri(getActivity(), bitmap);
+                        Log.i("TAG", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>run: "+path);
                         data.putExtra(ScanConstants.SCANNED_RESULT, uri);
                         getActivity().setResult(Activity.RESULT_OK, data);
                         original.recycle();
