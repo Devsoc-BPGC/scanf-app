@@ -1,0 +1,42 @@
+Index: app/src/main/java/club/devsoc/scanf/view/activity/ImageActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package club.devsoc.scanf.view.activity\n\nimport android.Manifest\nimport android.content.ActivityNotFoundException\nimport android.content.Intent\nimport android.content.pm.PackageManager\nimport android.graphics.Bitmap\nimport android.net.Uri\nimport androidx.appcompat.app.AppCompatActivity\nimport android.os.Bundle\nimport android.os.Environment\nimport android.provider.MediaStore\nimport android.view.View\nimport android.widget.ImageView\nimport androidx.core.app.ActivityCompat\nimport androidx.core.content.FileProvider\nimport club.devsoc.scanf.R\nimport com.google.android.material.floatingactionbutton.FloatingActionButton\nimport com.priyankvasa.android.cameraviewex.CameraView\nimport com.priyankvasa.android.cameraviewex.ErrorLevel\nimport com.priyankvasa.android.cameraviewex.Image\nimport com.priyankvasa.android.cameraviewex.Modes\nimport java.io.File\nimport java.io.IOException\nimport java.text.SimpleDateFormat\nimport java.util.*\n\nclass ImageActivity : AppCompatActivity() {\n\n\n    private lateinit var addImageBtn:ImageView\n    private lateinit var okBtn:ImageView\n    private lateinit var imageView: ImageView\n    val REQUEST_IMAGE_CAPTURE = 1\n    lateinit var currentPhotoPath: String\n\n    private lateinit var camera:CameraView\n\n    override fun onCreate(savedInstanceState: Bundle?) {\n        super.onCreate(savedInstanceState)\n        setContentView(R.layout.activity_image)\n\n        initActivity()\n\n        camera.addCameraOpenedListener { /* Camera opened. */ }\n            .addCameraErrorListener { t: Throwable, errorLevel: ErrorLevel -> /* Camera error! */ }\n            .addCameraClosedListener { /* Camera closed. */ }\n\n        // enable only single capture mode\n        camera.setCameraMode(Modes.CameraMode.SINGLE_CAPTURE)\n\n        // OR keep other modes as is and enable single capture mode\n        camera.enableCameraMode(Modes.CameraMode.SINGLE_CAPTURE)\n\n        // Output format is whatever set for [app:outputFormat] parameter\n        // Callback on UI thread\n        camera.addPictureTakenListener { image: Image -> /* Picture taken. */ }\n        if (ActivityCompat.checkSelfPermission(\n                this,\n                Manifest.permission.CAMERA\n            ) != PackageManager.PERMISSION_GRANTED\n        ) {\n            // TODO: Consider calling\n            //    ActivityCompat#requestPermissions\n            // here to request the missing permissions, and then overriding\n            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,\n            //                                          int[] grantResults)\n            // to handle the case where the user grants the permission. See the documentation\n            // for ActivityCompat#requestPermissions for more details.\n            return\n        }\n        camera.capture()\n\n        // Disable single capture mode\n        camera.disableCameraMode(Modes.CameraMode.SINGLE_CAPTURE)\n\n        //addImageBtn.setOnClickListener(View.OnClickListener { dispatchTakePictureIntent() })\n\n\n        /*on clicking photobutton\n        dispatchTakePictureIntent()\n        */\n\n\n    }\n\n    override fun onResume() {\n        super.onResume()\n        if (ActivityCompat.checkSelfPermission(\n                this,\n                Manifest.permission.CAMERA\n            ) != PackageManager.PERMISSION_GRANTED\n        ) {\n            // TODO: Consider calling\n            //    ActivityCompat#requestPermissions\n            // here to request the missing permissions, and then overriding\n            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,\n            //                                          int[] grantResults)\n            // to handle the case where the user grants the permission. See the documentation\n            // for ActivityCompat#requestPermissions for more details.\n            return\n        }\n        camera.start()\n    }\n\n    override fun onPause() {\n        camera.stop()\n        super.onPause()\n    }\n\n//    override fun onDestroyView() {\n//        camera.destroy()\n//        super.onDestroyView()\n//    }\n\n//    private fun dispatchTakePictureIntent() {\n//        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->\n//            // Ensure that there's a camera activity to handle the intent\n//            takePictureIntent.resolveActivity(packageManager)?.also {\n//                // Create the File where the photo should go\n//                val photoFile: File? = try {\n//                    createImageFile()\n//                } catch (ex: IOException) {\n//                    // Error occurred while creating the File\n//\n//                    null\n//                }\n//                // Continue only if the File was successfully created\n//                photoFile?.also {\n//                    val photoURI: Uri = FileProvider.getUriForFile(\n//                        this,\n//                        \"com.example.android.fileprovider\",\n//                        it\n//                    )\n//                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)\n//                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)\n//                }\n//            }\n//        }\n//    }\n\n\n//    @Throws(IOException::class)\n//    private fun createImageFile(): File {\n//        // Create an image file name\n//        val timeStamp: String = SimpleDateFormat(\"yyyyMMdd_HHmmss\").format(Date())\n//        val storageDir: File = getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!\n//        return File.createTempFile(\n//            \"JPEG_${timeStamp}_\", /* prefix */\n//            \".jpg\", /* suffix */\n//            storageDir /* directory */\n//        ).apply {\n//            // Save a file: path for use with ACTION_VIEW intents\n//            currentPhotoPath = absolutePath\n//        }\n//    }\n\n\n\n\n    private fun initActivity()\n    {\n        okBtn=findViewById(R.id.image_activity_okbtn)\n        addImageBtn=findViewById(R.id.image_activity_addimg)\n//        imageView=findViewById(R.id.image_activity_imgvw)\n        camera = findViewById(R.id.camera)\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/club/devsoc/scanf/view/activity/ImageActivity.kt	(revision 18a62643f0159845157fe8a20c23927b7085bd25)
++++ app/src/main/java/club/devsoc/scanf/view/activity/ImageActivity.kt	(date 1612031952000)
+@@ -4,7 +4,6 @@
+ import android.content.ActivityNotFoundException
+ import android.content.Intent
+ import android.content.pm.PackageManager
+-import android.graphics.Bitmap
+ import android.net.Uri
+ import androidx.appcompat.app.AppCompatActivity
+ import android.os.Bundle
+@@ -40,6 +39,9 @@
+         super.onCreate(savedInstanceState)
+         setContentView(R.layout.activity_image)
+ 
++
++
++
+         initActivity()
+ 
+         camera.addCameraOpenedListener { /* Camera opened. */ }
+Index: settings.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>include ':scanlibrary'\ninclude ':app'\nrootProject.name = \"Scanf\"
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- settings.gradle	(revision 18a62643f0159845157fe8a20c23927b7085bd25)
++++ settings.gradle	(date 1612200734000)
+@@ -1,3 +1,4 @@
++include ':scanlibrary'
+ include ':scanlibrary'
+ include ':app'
+ rootProject.name = "Scanf"
+\ No newline at end of file

@@ -1,0 +1,50 @@
+Index: app/src/main/java/club/devsoc/scanf/view/activity/MainActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package club.devsoc.scanf.view.activity\n\nimport androidx.appcompat.app.AppCompatActivity\nimport android.os.Bundle\nimport android.view.View\nimport android.widget.ImageView\nimport android.widget.Toast\nimport androidx.constraintlayout.widget.ConstraintLayout\nimport androidx.databinding.DataBindingUtil\nimport club.devsoc.scanf.R\nimport club.devsoc.scanf.databinding.ActivityMainBinding\nimport com.google.android.material.bottomsheet.BottomSheetBehavior\nimport android.view.MenuItem\nimport androidx.appcompat.app.ActionBarDrawerToggle\nimport androidx.drawerlayout.widget.DrawerLayout\nimport com.google.android.material.navigation.NavigationView\n\nclass MainActivity : AppCompatActivity(), View.OnClickListener,NavigationView.OnNavigationItemSelectedListener {\n\n    private lateinit var mainBinding: ActivityMainBinding\n    private lateinit var documentScanButton: ImageView\n    private lateinit var qrScanButton: ImageView\n    private lateinit var bottomSheet: ConstraintLayout\n    private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>\n    private var drawerLayout: DrawerLayout? = null\n\n    override fun onCreate(savedInstanceState: Bundle?) {\n        super.onCreate(savedInstanceState)\n\n        drawerLayout = findViewById(R.id.drawer_layout)\n        val navigationView = findViewById<NavigationView>(R.id.nav_view)\n        navigationView.setNavigationItemSelectedListener(this)\n        val toggle = ActionBarDrawerToggle(\n            this,\n            drawerLayout,\n            R.string.navigation_drawer_open,\n            R.string.navigation_drawer_close)\n        drawerLayout!!.addDrawerListener(toggle)\n        toggle.syncState()\n\n        if (savedInstanceState == null) {\n            navigationView.setCheckedItem(R.id.nav_recent_files)\n        }\n\n        defineLayouts()\n        initActivity()\n        attachOnClickListeners()\n    }\n    override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {\n        when (menuItem.itemId) {\n            R.id.nav_settings -> {\n            }\n            R.id.nav_recent_files -> {\n            }\n            R.id.nav_document_viewer -> {\n            }\n        }\n        return true\n    }\n\n    private fun defineLayouts() {\n        // defining the main activity data binding\n        mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)\n\n        // defining the bottom sheet layout\n        bottomSheet = findViewById(R.id.bottom_sheet_layout)\n    }\n\n    private fun initActivity() {\n        // defining the bottom sheet behaviour\n        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)\n\n        // defining the buttons inside the bottom sheet\n        // DATA BINDING IS NOT USED HERE, AS THE LAYOUT NEEDS TO BE A COORDINATOR LAYOUT\n        bottomSheet.apply {\n            documentScanButton = findViewById(R.id.document_scan_btn)\n            qrScanButton = findViewById(R.id.qr_scan_btn)\n        }\n\n        // setting initial state of bottom sheet to hidden\n        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN\n    }\n\n    // attaching on click listeners\n    private fun attachOnClickListeners() {\n        documentScanButton.setOnClickListener(this)\n        qrScanButton.setOnClickListener(this)\n        mainBinding.floatingActionButton.setOnClickListener(this)\n        mainBinding.mainActivityLayout.setOnClickListener(this)\n    }\n\n    // toggling bottom sheet visibility when fab is pressed\n    private fun onFabClicked() {\n        if (bottomSheetBehavior.state == 2 || bottomSheetBehavior.state == 5)\n            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED\n        else\n            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN\n    }\n\n    // whenever the user clicks anywhere on the screen, the bottom sheet is hidden\n    private fun onScreenClicked() {\n        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN\n    }\n\n    override fun onClick(v: View?) {\n        when (v?.id) {\n            R.id.document_scan_btn -> Toast.makeText(\n                this,\n                getString(R.string.scan_document),\n                Toast.LENGTH_SHORT).show()\n            R.id.qr_scan_btn -> Toast.makeText(\n                this,\n                getString(R.string.qr_scanner),\n                Toast.LENGTH_SHORT).show()\n            R.id.floating_action_button -> onFabClicked()\n            R.id.main_activity_layout -> onScreenClicked()\n        }\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/club/devsoc/scanf/view/activity/MainActivity.kt	(revision 7b6909eea7df44aceca255c48dabac9cfa6a12b6)
++++ app/src/main/java/club/devsoc/scanf/view/activity/MainActivity.kt	(date 1611941755000)
+@@ -12,6 +12,7 @@
+ import com.google.android.material.bottomsheet.BottomSheetBehavior
+ import android.view.MenuItem
+ import androidx.appcompat.app.ActionBarDrawerToggle
++import androidx.core.view.GravityCompat
+ import androidx.drawerlayout.widget.DrawerLayout
+ import com.google.android.material.navigation.NavigationView
+ 
+@@ -55,6 +56,7 @@
+             R.id.nav_document_viewer -> {
+             }
+         }
++        drawerLayout?.closeDrawer(GravityCompat.START)
+         return true
+     }
+ 
+Index: app/src/main/res/layout/activity_main.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n\n<layout xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:tools=\"http://schemas.android.com/tools\"\nxmlns:app=\"http://schemas.android.com/apk/res-auto\">\n\n<androidx.drawerlayout.widget.DrawerLayout\n    android:id=\"@+id/drawer_layout\"\n    android:layout_width=\"match_parent\"\n    android:layout_height=\"match_parent\"\n    android:fitsSystemWindows=\"true\"\n    tools:context=\".view.activity.MainActivity\">\n  \n   <androidx.constraintlayout.widget.ConstraintLayout\n        android:id=\"@+id/main_activity_layout\"\n        android:layout_width=\"match_parent\"\n        android:layout_height=\"match_parent\"\n        tools:context=\".view.activity.MainActivity\">\n\n        <androidx.coordinatorlayout.widget.CoordinatorLayout\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"match_parent\">\n\n            <include layout=\"@layout/bottom_sheet\" />\n\n            <com.google.android.material.floatingactionbutton.FloatingActionButton\n                android:id=\"@+id/floating_action_button\"\n                android:layout_width=\"@dimen/main_activity_fab_dims\"\n                android:layout_height=\"@dimen/main_activity_fab_dims\"\n                android:layout_gravity=\"end|bottom\"\n                android:layout_margin=\"@dimen/main_activity_fab_margin\" />\n        </androidx.coordinatorlayout.widget.CoordinatorLayout>\n    </androidx.constraintlayout.widget.ConstraintLayout>\n\n    <FrameLayout\n        android:id=\"@+id/main_frame_layout\"\n        android:layout_width=\"match_parent\"\n        android:layout_height=\"match_parent\">\n    </FrameLayout>\n\n    <com.google.android.material.navigation.NavigationView\n        android:id= \"@+id/nav_view\"\n        android:layout_width= \"wrap_content\"\n        android:layout_height= \"match_parent\"\n        android:layout_gravity= \"start\"\n        android:fitsSystemWindows= \"true\"\n        app:headerLayout= \"@layout/side_navigation_header\"\n        app:menu= \"@menu/side_navigation\" />\n\n</androidx.drawerlayout.widget.DrawerLayout>\n\n   \n</layout>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_main.xml	(revision 7b6909eea7df44aceca255c48dabac9cfa6a12b6)
++++ app/src/main/res/layout/activity_main.xml	(date 1611942277000)
+@@ -4,13 +4,14 @@
+     xmlns:tools="http://schemas.android.com/tools"
+ xmlns:app="http://schemas.android.com/apk/res-auto">
+ 
++
+ <androidx.drawerlayout.widget.DrawerLayout
+     android:id="@+id/drawer_layout"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     android:fitsSystemWindows="true"
+     tools:context=".view.activity.MainActivity">
+-  
++
+    <androidx.constraintlayout.widget.ConstraintLayout
+         android:id="@+id/main_activity_layout"
+         android:layout_width="match_parent"

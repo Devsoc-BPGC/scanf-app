@@ -1,4 +1,3 @@
 include ':scanlibrary'
-include ':scanlibrary'
 include ':app'
 rootProject.name = "Scanf"
