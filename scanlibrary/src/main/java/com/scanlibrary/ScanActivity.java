@@ -7,16 +7,20 @@ import android.content.ComponentCallbacks2;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 
 /**
  * Created by jhansi on 28/03/15.
  */
 public class ScanActivity extends Activity implements IScanner, ComponentCallbacks2 {
 
+//    private AlertDialog alertDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scan_layout);
+        Log.i("TAG", ">>>>>>>>>>>>>onCreate: ScanActivity created");
         init();
     }
 
@@ -37,6 +41,7 @@ public class ScanActivity extends Activity implements IScanner, ComponentCallbac
 
     @Override
     public void onBitmapSelect(Uri uri) {
+        Log.i("TAG", ">>>>>>>>>>>>>onCreate: Bitmap Selected");
         ScanFragment fragment = new ScanFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable(ScanConstants.SELECTED_BITMAP, uri);
@@ -50,6 +55,7 @@ public class ScanActivity extends Activity implements IScanner, ComponentCallbac
 
     @Override
     public void onScanFinish(Uri uri) {
+        Log.i("TAG", ">>>>>>>>>>>>>onCreate: Scan Finished");
         ResultFragment fragment = new ResultFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable(ScanConstants.SCANNED_RESULT, uri);
@@ -99,6 +105,7 @@ public class ScanActivity extends Activity implements IScanner, ComponentCallbac
                         .setMessage(R.string.low_memory_message)
                         .create()
                         .show();
+                Log.i("TAG", "onTrimMemory: Memory Trim Error low on memory");
                 break;
             default:
                 /*
@@ -124,5 +131,11 @@ public class ScanActivity extends Activity implements IScanner, ComponentCallbac
     static {
         System.loadLibrary("opencv_java3");
         System.loadLibrary("Scanner");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
     }
 }

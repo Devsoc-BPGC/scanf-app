@@ -14,4 +14,5 @@
     <string name="low_memory">Low Memory</string>
     <string name="low_memory_message">Your phone is low on memory, you may feel some lags while editing images.</string>
     <string name="image_path">image_path</string>
+
 </resources>
