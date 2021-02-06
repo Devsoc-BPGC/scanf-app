@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
@@ -102,7 +103,8 @@ public class ResultFragment extends Fragment {
                             bitmap = original;
                         }
                         SharedPreferences sharedPref = getActivity().getSharedPreferences("Prefs", Context.MODE_PRIVATE);
-                        String path = sharedPref.getString("image_name","image_name");
+                        String path = sharedPref.getString(getString(R.string.image_path),"image_name");
+                        saveToFile(path,bitmap);
 
 //                        MediaStore.Images.Media.insertImage(getContext().getContentResolver(),ScanConstants.IMAGE_PATH,path,path);
                         Uri uri = Utils.getUri(getActivity(), bitmap);
@@ -124,6 +126,15 @@ public class ResultFragment extends Fragment {
                 }
             });
         }
+    }
+
+    public static void saveToFile(String filename,Bitmap bmp) {
+        try {
+            FileOutputStream out = new FileOutputStream(filename);
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.flush();
+            out.close();
+        } catch(Exception e) {}
     }
 
     private class BWButtonClickListener implements View.OnClickListener {
