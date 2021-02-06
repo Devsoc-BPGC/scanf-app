@@ -54,7 +54,7 @@ class ImageActivity : AppCompatActivity() {
     private lateinit var camera:CameraView
     private val DOCUMENT_SCAN = 20
     val REQUEST_ID_MULTIPLE_PERMISSIONS = 7
-    private var uriList:ArrayList<String> = ArrayList()
+    private var uriList:ArrayList<Bitmap> = ArrayList()
 
     private lateinit var viewModel: ImageActivityViewModel
 
@@ -112,7 +112,11 @@ class ImageActivity : AppCompatActivity() {
                     Log.i("TAG", ">>>>>>>>>>>>>>createPDFWithMultipleImage: "+ uriList[0])
                     Log.i("TAG", ">>>>>>>>>>>>>>createPDFWithMultipleImage: "+ uriList.size.toString())
 
-                    var bitmap = BitmapFactory.decodeFile(uriList[i])
+//                    var bitmap = BitmapFactory.decodeFile(uriList[i])
+                    var bitmap: Bitmap? = null
+                    bitmap = uriList[i]
+//                    bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uriList[i])
+//                    contentResolver.delete(uriList[i], null, null)
                     var pageInfo: PdfDocument.PageInfo = PdfDocument.PageInfo.Builder(
                         bitmap.width,
                         bitmap.height,
@@ -176,21 +180,21 @@ class ImageActivity : AppCompatActivity() {
 
             DOCUMENT_SCAN -> {
                 val uri: Uri = data?.extras?.getParcelable(ScanConstants.SCANNED_RESULT)!!
-//                uriList.add(uri)
 //                numImagesTV.setText(String.format("Number of images: %f",uriList.size))
                 var bitmap: Bitmap? = null
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
                     contentResolver.delete(uri, null, null)
-                    val sharedPref = this.getSharedPreferences("Prefs",Context.MODE_PRIVATE) ?: return
-                    val defaultValue = resources.getString(R.string.image_path)
-                    val image_path = sharedPref.getString(getString(R.string.image_path), defaultValue)
-                    with (sharedPref.edit()) {
-                        clear()
-                    }
-                    if (image_path != null) {
-                        uriList.add(image_path)
-                    }
+                    uriList.add(bitmap)
+//                    val sharedPref = this.getSharedPreferences("Prefs",Context.MODE_PRIVATE) ?: return
+//                    val defaultValue = resources.getString(R.string.image_path)
+//                    val image_path = sharedPref.getString(getString(R.string.image_path), defaultValue)
+//                    with (sharedPref.edit()) {
+//                        clear()
+//                    }
+//                    if (image_path != null) {
+//                        uriList.add(image_path)
+//                    }
 
                     Log.i("TAG", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>onActivityResult: " + uri.toString())
 
