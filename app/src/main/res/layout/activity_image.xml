@@ -13,6 +13,17 @@
         android:padding="5dp"
         android:id="@+id/num_of_images_txt"
         android:layout_alignParentTop="true"/>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/num_of_images_txt"
+        android:layout_above="@id/image_activity_save_btn">
+        
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height=""
+    </LinearLayout>
 
 
 
@@ -25,15 +36,15 @@
 
 
 
-    <ImageView
-        android:layout_width="100sp"
-        android:layout_height="100sp"
-        android:id="@+id/image_activity_addimg"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="20sp"
-        android:layout_marginBottom="25dp"
-        android:src="@drawable/ic_baseline_add_circle_outline_24"
-        />
+<!--    <ImageView-->
+<!--        android:layout_width="100sp"-->
+<!--        android:layout_height="100sp"-->
+<!--        android:id="@+id/image_activity_addimg"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_marginStart="20sp"-->
+<!--        android:layout_marginBottom="25dp"-->
+<!--        android:src="@drawable/ic_baseline_add_circle_outline_24"-->
+<!--        />-->
 
     <ImageView
         android:layout_width="100sp"
