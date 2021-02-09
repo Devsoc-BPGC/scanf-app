@@ -63,11 +63,11 @@ public class PickImageFragment extends Fragment {
         cameraButton.setOnClickListener(new CameraButtonClickListener());
         galleryButton = (ImageButton) view.findViewById(R.id.selectButton);
         galleryButton.setOnClickListener(new GalleryClickListener());
-        if (isIntentPreferenceSet()) {
-            handleIntentPreference();
-        } else {
-            getActivity().finish();
-        }
+//        if (isIntentPreferenceSet()) {
+//            handleIntentPreference();
+//        } else {
+//            getActivity().finish();
+//        }
     }
 
     private void clearTempImages() {
