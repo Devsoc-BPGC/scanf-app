@@ -12,19 +12,18 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import club.devsoc.scanf.BuildConfig
 import club.devsoc.scanf.R
+import club.devsoc.scanf.model.ImageModel
 import club.devsoc.scanf.view.adapter.ImageViewAdapter
 import club.devsoc.scanf.viewmodel.ImageActivityViewModel
 import com.google.android.material.internal.ContextUtils.getActivity
@@ -45,6 +44,7 @@ class ImageActivity : AppCompatActivity() {
     private lateinit var addImageBtn:ImageView
     private lateinit var okBtn:ImageView
     private lateinit var recycler_view:RecyclerView
+    private var adapterList:ArrayList<ImageModel> = ArrayList()
     private lateinit var adapter:ImageViewAdapter
     private lateinit var imageView: ImageView
     private lateinit var saveButton:Button
@@ -85,18 +85,18 @@ class ImageActivity : AppCompatActivity() {
             Log.i("TAG", ">>>>>>>>>>>>>>>>>onClick: clicked btn")
         })
 
-        addImageBtn.setOnClickListener(View.OnClickListener {
-            val cameraImgIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-
-            cameraImgIntent.putExtra(
-                MediaStore.EXTRA_OUTPUT,
-                FileProvider.getUriForFile(
-                    applicationContext, BuildConfig.APPLICATION_ID + ".fileprovider",
-                    File(applicationContext.filesDir, persistentImageName)
-                )
-            )
-            startActivityForResult(cameraImgIntent, IMAGE_CAPTURE)
-        })
+//        addImageBtn.setOnClickListener(View.OnClickListener {
+//            val cameraImgIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//
+//            cameraImgIntent.putExtra(
+//                MediaStore.EXTRA_OUTPUT,
+//                FileProvider.getUriForFile(
+//                    applicationContext, BuildConfig.APPLICATION_ID + ".fileprovider",
+//                    File(applicationContext.filesDir, persistentImageName)
+//                )
+//            )
+//            startActivityForResult(cameraImgIntent, IMAGE_CAPTURE)
+//        })
 
         saveButton.setOnClickListener(View.OnClickListener {
             createPDFWithMultipleImage()
@@ -189,6 +189,9 @@ class ImageActivity : AppCompatActivity() {
                     bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
                     contentResolver.delete(uri, null, null)
                     uriList.add(bitmap)
+                    adapterList.add(ImageModel(bitmap))
+                    adapter.addData(adapterList)
+                    adapter.notifyDataSetChanged()
 //                    val sharedPref = this.getSharedPreferences("Prefs",Context.MODE_PRIVATE) ?: return
 //                    val defaultValue = resources.getString(R.string.image_path)
 //                    val image_path = sharedPref.getString(getString(R.string.image_path), defaultValue)
@@ -201,7 +204,6 @@ class ImageActivity : AppCompatActivity() {
 
                     Log.i("TAG", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>onActivityResult: " + uri.toString())
 
-                    imageView.setImageBitmap(bitmap)
                 } catch (e: IOException) {
                     e.printStackTrace()
                 }
@@ -299,7 +301,7 @@ class ImageActivity : AppCompatActivity() {
 
     private fun setupUI() {
         recycler_view = findViewById(R.id.image_ativity_rv);
-        recycler_view!!.layoutManager = GridLayoutManager(this,3)
+        recycler_view!!.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
         adapter = ImageViewAdapter(arrayListOf())
         recycler_view!!.adapter = adapter;
     }
@@ -307,8 +309,8 @@ class ImageActivity : AppCompatActivity() {
     private fun initActivity()
     {
         okBtn=findViewById(R.id.image_activity_okbtn)
-        addImageBtn=findViewById(R.id.image_activity_addimg)
-        imageView=findViewById(R.id.image_activity_imgvw)
+//        addImageBtn=findViewById(R.id.image_activity_addimg)
+//        imageView=findViewById(R.id.image_activity_imgvw)
         saveButton=findViewById(R.id.image_activity_save_btn);
         numImagesTV=findViewById(R.id.num_of_images_txt)
 //        camera = findViewById(R.id.camera)
