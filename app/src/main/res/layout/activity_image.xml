@@ -18,7 +18,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/num_of_images_txt"
-        android:layout_above="@id/image_activity_save_btn">
+        android:layout_above="@id/image_activity_save_btn"
+        android:gravity="">
         
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
