@@ -21,8 +21,11 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import club.devsoc.scanf.BuildConfig
 import club.devsoc.scanf.R
+import club.devsoc.scanf.view.adapter.ImageViewAdapter
 import club.devsoc.scanf.viewmodel.ImageActivityViewModel
 import com.google.android.material.internal.ContextUtils.getActivity
 import com.priyankvasa.android.cameraviewex.CameraView
@@ -41,21 +44,19 @@ class ImageActivity : AppCompatActivity() {
 
     private lateinit var addImageBtn:ImageView
     private lateinit var okBtn:ImageView
+    private lateinit var recycler_view:RecyclerView
+    private lateinit var adapter:ImageViewAdapter
     private lateinit var imageView: ImageView
     private lateinit var saveButton:Button
     private lateinit var numImagesTV:TextView
     val REQUEST_IMAGE_CAPTURE = 1
     lateinit var currentPhotoPath: String
-
     var persistentImageName: String = "scanned.jpg"
-
     private val IMAGE_CAPTURE = 10
-
     private lateinit var camera:CameraView
     private val DOCUMENT_SCAN = 20
     val REQUEST_ID_MULTIPLE_PERMISSIONS = 7
     private var uriList:ArrayList<Bitmap> = ArrayList()
-
     private lateinit var viewModel: ImageActivityViewModel
 
 
@@ -67,6 +68,8 @@ class ImageActivity : AppCompatActivity() {
         initActivity()
 
         setupViewModel()
+
+        setupUI()
 
         onClick()
 
@@ -294,6 +297,12 @@ class ImageActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this).get(ImageActivityViewModel::class.java)
     }
 
+    private fun setupUI() {
+        recycler_view = findViewById(R.id.image_ativity_rv);
+        recycler_view!!.layoutManager = GridLayoutManager(this,3)
+        adapter = ImageViewAdapter(arrayListOf())
+        recycler_view!!.adapter = adapter;
+    }
 
     private fun initActivity()
     {
