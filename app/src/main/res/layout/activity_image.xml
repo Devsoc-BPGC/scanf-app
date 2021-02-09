@@ -22,7 +22,9 @@
         
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height=""
+            android:layout_height="match_parent"
+            />
+
     </LinearLayout>
 
 
@@ -54,7 +56,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="25dp"
-        android:src="@drawable/ic_baseline_check_circle_outline_24"
+        android:src="@drawable/ic_baseline_add_circle_outline_24"
         />
 
     <Button
