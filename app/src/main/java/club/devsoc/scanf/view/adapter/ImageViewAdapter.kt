@@ -7,13 +7,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import club.devsoc.scanf.R
 import club.devsoc.scanf.model.ImageModel
+import kotlinx.android.synthetic.main.scanned_image_view.view.*
 
 class ImageViewAdapter(private var images: ArrayList<ImageModel> ):
     RecyclerView.Adapter<ImageViewAdapter.ImageVH>() {
     class ImageVH(itemView: View):RecyclerView.ViewHolder(itemView) {
         fun bind(image:ImageModel){
-//            itemView.image = image.bitmap
-
+            itemView.image_view_rv_item.setImageBitmap(image.bitmap)
         }
 
     }

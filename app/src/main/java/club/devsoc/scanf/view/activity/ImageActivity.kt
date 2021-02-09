@@ -295,8 +295,6 @@ class ImageActivity : AppCompatActivity() {
     }
 
 
-
-
     private fun initActivity()
     {
         okBtn=findViewById(R.id.image_activity_okbtn)
