@@ -13,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -129,14 +130,21 @@ public class PickImageFragment extends Fragment {
             boolean isDirectoryCreated = file.getParentFile().mkdirs();
             Log.d("", "openCamera: isDirectoryCreated: " + isDirectoryCreated);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+
+
                 Uri tempFileUri = FileProvider.getUriForFile(getActivity().getApplicationContext(),
                         "com.scanlibrary.provider", // As defined in Manifest
                         file);
+                Log.i(">>>>>>>>>>>>>>>>>>>", "openCamera: build version good: "+tempFileUri.toString());
+                Log.i(">>>>>>>>>>>>>>>>>>>", "openCamera: build version good: "+tempFileUri.getPath());
                 cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, tempFileUri);
             } else {
+                Log.i(">>>>>>>>>>>>>>>>>>>", "openCamera: build version bad: ");
+
                 Uri tempFileUri = Uri.fromFile(file);
                 cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, tempFileUri);
             }
+//            cameraIntent.putExtra("return-data", true);
             startActivityForResult(cameraIntent, ScanConstants.START_CAMERA_REQUEST_CODE);
         } else {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE);
@@ -147,8 +155,11 @@ public class PickImageFragment extends Fragment {
         clearTempImages();
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new
                 Date());
+//        File path = Environment.getExternalStoragePublicDirectory(
+//                Environment.DIRECTORY_PICTURES);
         File file = new File(ScanConstants.IMAGE_PATH, "IMG_" + timeStamp +
                 ".jpg");
+//        path.mkdirs();
         fileUri = Uri.fromFile(file);
         SharedPreferences sharedPref = getActivity().getSharedPreferences("Prefs",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
@@ -162,13 +173,16 @@ public class PickImageFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("", "onActivityResult" + resultCode);
+        Log.d(">>>>>>>>>>>>", "onActivityResult" + resultCode);
         Bitmap bitmap = null;
         if (resultCode == Activity.RESULT_OK) {
             try {
                 switch (requestCode) {
                     case ScanConstants.START_CAMERA_REQUEST_CODE:
+                        Log.d(">>>>>>>>>>>>", "onActivityResult" + fileUri.getPath());
+//                        bitmap=MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), fileUri);
                         bitmap = getBitmap(fileUri);
+                        Log.i("Camera Sent", "onActivityResult: >>>>>>>>>>>>>>>>>>"+bitmap.toString());
                         break;
 
                     case ScanConstants.PICKFILE_REQUEST_CODE:
@@ -196,8 +210,7 @@ public class PickImageFragment extends Fragment {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = 3;
         AssetFileDescriptor fileDescriptor = null;
-        fileDescriptor =
-                getActivity().getContentResolver().openAssetFileDescriptor(selectedimg, "r");
+        fileDescriptor = getActivity().getContentResolver().openAssetFileDescriptor(selectedimg, "r");
         Bitmap original
                 = BitmapFactory.decodeFileDescriptor(
                 fileDescriptor.getFileDescriptor(), null, options);
