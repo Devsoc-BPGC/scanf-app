@@ -2,35 +2,39 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:weightSum="2"
     >
 
     <androidx.cardview.widget.CardView
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_margin="8dp"
+
         >
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingHorizontal="10dp"
             >
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
+                android:src="@drawable/ic_pdf"
                 android:id="@+id/pdf_files_imgvw"
                 />
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="15dp"
-                android:layout_alignBottom="@id/pdf_files_imgvw"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/gradient_drawable"
-                android:text="SAMPLE TEXT"
+                android:layout_height="30dp"
+                android:layout_margin="8dp"
+
+                android:layout_below="@id/pdf_files_imgvw"
+                android:background="#D1495D"
+                android:textStyle="bold"
+
+                android:text="Sample.pdf"
                 android:gravity="center"
-                android:textColor="#000000"
+                android:textColor="#fff"
                 android:id="@+id/pdf_files_nametv"
                 />
         </RelativeLayout>

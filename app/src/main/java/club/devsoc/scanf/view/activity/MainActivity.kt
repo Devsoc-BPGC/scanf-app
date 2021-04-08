@@ -1,22 +1,26 @@
 package club.devsoc.scanf.view.activity
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
-import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import club.devsoc.scanf.R
 import club.devsoc.scanf.databinding.ActivityMainBinding
+import club.devsoc.scanf.model.PdfModel
+import club.devsoc.scanf.view.adapter.PdfRvAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import android.view.MenuItem
-import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.navigation.NavigationView
+import com.scanlibrary.ScanConstants
+import java.io.File
 
 class MainActivity : AppCompatActivity(), View.OnClickListener,NavigationView.OnNavigationItemSelectedListener {
 
@@ -26,7 +30,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,NavigationView.On
     private lateinit var bottomSheet: ConstraintLayout
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private var drawerLayout: DrawerLayout? = null
+
     private  lateinit var recyclerView: RecyclerView
+    private lateinit var pdfAdapter:PdfRvAdapter
+    private lateinit var PDFlist:ArrayList<PdfModel>
+    private lateinit var gridLayoutManager: GridLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +48,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,NavigationView.On
             this,
             drawerLayout,
             R.string.navigation_drawer_open,
-            R.string.navigation_drawer_close)
+            R.string.navigation_drawer_close
+        )
         drawerLayout!!.addDrawerListener(toggle)
         toggle.syncState()
 
@@ -50,8 +59,42 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,NavigationView.On
 
 
         initActivity()
+
+        setRecyclerView()
+
         attachOnClickListeners()
     }
+
+    private fun setRecyclerView() {
+        //get pdf file data
+        searchPDF()
+
+        //initialise and set adapter
+        pdfAdapter = PdfRvAdapter(PDFlist)
+        recyclerView.adapter=pdfAdapter
+
+        //initialise recycle view
+        gridLayoutManager = GridLayoutManager(this, 2)
+        recyclerView.layoutManager=gridLayoutManager
+        //notify data set changed
+        pdfAdapter.notifyDataSetChanged()
+    }
+
+    private fun searchPDF() {
+        var root = File(getExternalFilesDir(null), "My PDF Folder")
+        val FileList: Array<File> = root.listFiles()
+        PDFlist = ArrayList(3)
+        if (FileList != null) {
+            for (i in FileList.indices) {
+                    if (FileList[i].getName().endsWith(".pdf")) {
+                        //here you have that file.
+                        var temppdf:PdfModel = PdfModel(FileList[i].path,FileList[i].name)
+                        PDFlist.add(temppdf)
+                }
+            }
+        }
+    }
+
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
             R.id.nav_settings -> {
@@ -111,7 +154,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,NavigationView.On
     }
 
     private fun onDocScanClicked(){
-        val intentDoc = Intent(this,ImageActivity::class.java)
+        val intentDoc = Intent(this, ImageActivity::class.java)
         startActivity(intentDoc)
     }
 

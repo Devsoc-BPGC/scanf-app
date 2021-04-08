@@ -14,7 +14,6 @@ class PdfRvAdapter(private var pdfModel : ArrayList<PdfModel>):RecyclerView.Adap
 
         fun bind(pdfModel: PdfModel)
         {
-            itemView.pdf_files_imgvw.setImageBitmap(pdfModel.bitmap)
             itemView.pdf_files_nametv.setText(pdfModel.name)
         }
 
