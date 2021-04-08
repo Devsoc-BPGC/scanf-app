@@ -36,8 +36,8 @@ import java.util.Date;
  */
 public class PickImageFragment extends Fragment {
 
-    private View view;
-    private ImageButton cameraButton;
+    private View view;private ImageButton cameraButton;
+
     private ImageButton galleryButton;
     private Uri fileUri;
     private IScanner scanner;

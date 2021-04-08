@@ -2,7 +2,8 @@ package club.devsoc.scanf.view.activity
 
 import android.Manifest
 import android.app.Activity
-import android.content.Context
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.*
@@ -16,21 +17,16 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import club.devsoc.scanf.BuildConfig
 import club.devsoc.scanf.R
 import club.devsoc.scanf.model.ImageModel
 import club.devsoc.scanf.view.adapter.ImageViewAdapter
 import club.devsoc.scanf.viewmodel.ImageActivityViewModel
-import com.google.android.material.internal.ContextUtils.getActivity
 import com.priyankvasa.android.cameraviewex.CameraView
 import com.scanlibrary.ScanActivity
 import com.scanlibrary.ScanConstants
-import com.scanlibrary.Utils
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -50,6 +46,7 @@ class ImageActivity : AppCompatActivity() {
     private lateinit var saveButton:Button
     private lateinit var numImagesTV:TextView
     val REQUEST_IMAGE_CAPTURE = 1
+    private lateinit var imageFileName:String
     lateinit var currentPhotoPath: String
     var persistentImageName: String = "scanned.jpg"
     private val IMAGE_CAPTURE = 10
@@ -98,8 +95,27 @@ class ImageActivity : AppCompatActivity() {
 //            startActivityForResult(cameraImgIntent, IMAGE_CAPTURE)
 //        })
 
+
+            saveButton.visibility=View.INVISIBLE
+
         saveButton.setOnClickListener(View.OnClickListener {
-            createPDFWithMultipleImage()
+            //TAKE INPUT FROM USER
+            val builder = AlertDialog.Builder(this)
+            val inflater = layoutInflater
+            builder.setTitle("Set Document Name")
+            val dialogLayout = inflater.inflate(R.layout.alert_dialog_with_edittext, null)
+            val editText  = dialogLayout.findViewById<EditText>(R.id.editText)
+            var timestamp:String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
+            editText.setText("PDF_" + timestamp)
+            imageFileName = "PDF_"+timestamp
+            builder.setView(dialogLayout)
+            builder.setPositiveButton("OK") { dialogInterface, i ->
+                Toast.makeText(applicationContext, "Name set: " + editText.text.toString(), Toast.LENGTH_SHORT).show()
+                imageFileName = editText.text.toString()
+                createPDFWithMultipleImage()
+            }
+            builder.show()
+
         })
     }
 
@@ -112,8 +128,11 @@ class ImageActivity : AppCompatActivity() {
                 var fileOutputStream = FileOutputStream(file)
                 var pdfDocument = PdfDocument()
                 for (i in 0 until uriList.size) {
-                    Log.i("TAG", ">>>>>>>>>>>>>>createPDFWithMultipleImage: "+ uriList[0])
-                    Log.i("TAG", ">>>>>>>>>>>>>>createPDFWithMultipleImage: "+ uriList.size.toString())
+                    Log.i("TAG", ">>>>>>>>>>>>>>createPDFWithMultipleImage: " + uriList[0])
+                    Log.i(
+                        "TAG",
+                        ">>>>>>>>>>>>>>createPDFWithMultipleImage: " + uriList.size.toString()
+                    )
 
 //                    var bitmap = BitmapFactory.decodeFile(uriList[i])
                     var bitmap: Bitmap? = null
@@ -132,6 +151,7 @@ class ImageActivity : AppCompatActivity() {
                     canvas.drawPaint(paint)
                     canvas.drawBitmap(bitmap, 0f, 0f, null)
                     pdfDocument.finishPage(page)
+
                     bitmap.recycle()
                 }
                 pdfDocument.writeTo(fileOutputStream)
@@ -156,8 +176,9 @@ class ImageActivity : AppCompatActivity() {
 //            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
 //            String imageFileName = "PDF_" + timeStamp;
 
-            var timestamp:String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
-            var imageFileName:String="PDF_"+timestamp
+
+
+
             return File(root, imageFileName + ".pdf")
         }
         else
@@ -175,7 +196,7 @@ class ImageActivity : AppCompatActivity() {
         if (resultCode != Activity.RESULT_OK) {
             return
         }
-
+        saveButton.visibility=View.VISIBLE
         when(requestCode) {
             IMAGE_CAPTURE -> {
                 imageView.setImageBitmap(BitmapFactory.decodeFile("${applicationContext.filesDir}/${persistentImageName}"))
@@ -202,7 +223,10 @@ class ImageActivity : AppCompatActivity() {
 //                        uriList.add(image_path)
 //                    }
 
-                    Log.i("TAG", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>onActivityResult: " + uri.toString())
+                    Log.i(
+                        "TAG",
+                        ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>onActivityResult: " + uri.toString()
+                    )
 
                 } catch (e: IOException) {
                     e.printStackTrace()
@@ -301,10 +325,15 @@ class ImageActivity : AppCompatActivity() {
 
     private fun setupUI() {
         recycler_view = findViewById(R.id.image_ativity_rv);
-        recycler_view!!.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
+        recycler_view!!.layoutManager = LinearLayoutManager(
+            this,
+            LinearLayoutManager.HORIZONTAL,
+            false
+        )
         adapter = ImageViewAdapter(arrayListOf())
         recycler_view!!.adapter = adapter;
     }
+
 
     private fun initActivity()
     {
