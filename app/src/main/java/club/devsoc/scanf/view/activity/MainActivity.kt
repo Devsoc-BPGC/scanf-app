@@ -15,6 +15,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity(), View.OnClickListener,NavigationView.OnNavigationItemSelectedListener {
@@ -25,6 +26,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,NavigationView.On
     private lateinit var bottomSheet: ConstraintLayout
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private var drawerLayout: DrawerLayout? = null
+    private  lateinit var recyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,6 +71,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,NavigationView.On
 
         // defining the bottom sheet layout
         bottomSheet = findViewById(R.id.bottom_sheet_layout)
+        recyclerView =findViewById(R.id.main_rv)
     }
 
     private fun initActivity() {
