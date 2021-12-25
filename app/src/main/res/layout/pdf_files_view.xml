@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:weightSum="2">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="4dp"
+        app:cardCornerRadius="8dp"
+        android:layout_margin="4dp"
+        app:cardBackgroundColor="#FBE9E9"
+
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:src="@drawable/ic_pdf"
+                android:id="@+id/pdf_files_imgvw"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+
+                android:layout_below="@id/pdf_files_imgvw"
+                android:background="#DC3535"
+                android:textStyle="bold"
+
+                android:text="Sample.pdf"
+                android:gravity="center"
+                android:textColor="#fff"
+                android:id="@+id/pdf_files_nametv"
+                />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

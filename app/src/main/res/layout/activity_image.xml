@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.activity.ImageActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:id="@+id/num_of_images_txt"
+        android:layout_alignParentTop="true"/>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/num_of_images_txt"
+        android:layout_above="@id/image_activity_save_btn"
+        android:gravity="">
+        
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/image_ativity_rv"
+            />
+
+    </LinearLayout>
+
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/num_of_images_txt"
+        android:id="@+id/image_activity_imgvw"
+        android:layout_above="@id/image_activity_okbtn"/>
+
+
+
+<!--    <ImageView-->
+<!--        android:layout_width="100sp"-->
+<!--        android:layout_height="100sp"-->
+<!--        android:id="@+id/image_activity_addimg"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_marginStart="20sp"-->
+<!--        android:layout_marginBottom="25dp"-->
+<!--        android:src="@drawable/ic_baseline_add_circle_outline_24"-->
+<!--        />-->
+
+    <ImageView
+        android:layout_width="100sp"
+        android:layout_height="100sp"
+        android:id="@+id/image_activity_okbtn"
+        android:layout_marginEnd="20sp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="25dp"
+        android:src="@drawable/ic_baseline_add_circle_outline_24"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/image_activity_save_btn"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dp"
+        android:padding="20dp"
+        android:text="Save"
+        android:textSize="20dp"
+        android:layout_toRightOf="@+id/image_activity_addimg"
+        android:layout_marginStart="40dp"
+        />
+
+</RelativeLayout>

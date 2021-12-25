@@ -14,4 +14,6 @@
 
     <string name="scan_document">Scan document</string>
     <string name="qr_scanner">QR Scanner</string>
+    <string name="image_path">image_path</string>
+
 </resources>
