@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,NavigationView.On
 
     private fun searchPDF() {
         var root = File(getExternalFilesDir(null), "My PDF Folder")
-        val FileList: Array<File> = root.listFiles()
+        val FileList: Array<File>? = root.listFiles()
         PDFlist = ArrayList(3)
         if (FileList != null) {
             for (i in FileList.indices) {
