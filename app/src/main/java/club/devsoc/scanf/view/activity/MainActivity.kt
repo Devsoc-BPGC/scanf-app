@@ -24,12 +24,9 @@ import java.io.File
 
 class MainActivity : AppCompatActivity(), View.OnClickListener,NavigationView.OnNavigationItemSelectedListener {
 
-    private lateinit var mainBinding: ActivityMainBinding
-    private lateinit var documentScanButton: ImageView
-    private lateinit var qrScanButton: ImageView
-    private lateinit var bottomSheet: ConstraintLayout
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
-    private var drawerLayout: DrawerLayout? = null
+    private lateinit var bottomSheet : ConstraintLayout
+    private lateinit var bottomSheetBehavior :
+            BottomSheetBehavior<ConstraintLayout>
 
     private  lateinit var recyclerView: RecyclerView
     private lateinit var pdfAdapter:PdfRvAdapter
@@ -38,6 +35,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,NavigationView.On
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        defineLayouts()
+        initActivity()
+        attachOnClickListeners()
+
+        nav_view.setNavigationItemSelectedListener(this)
 
         defineLayouts()
 
@@ -46,17 +50,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,NavigationView.On
 //        navigationView.setNavigationItemSelectedListener(this)
         val toggle = ActionBarDrawerToggle(
             this,
-            drawerLayout,
+            drawer_layout,
             R.string.navigation_drawer_open,
-            R.string.navigation_drawer_close
-        )
-        drawerLayout!!.addDrawerListener(toggle)
+            R.string.navigation_drawer_close)
+
+        drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
         if (savedInstanceState == null) {
-            navigationView.setCheckedItem(R.id.nav_recent_files)
+                nav_view
+                .setCheckedItem(R.id.nav_recent_files)
         }
-
 
         initActivity()
 
@@ -109,24 +113,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,NavigationView.On
     }
 
     private fun defineLayouts() {
-        // defining the main activity data binding
-        mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-
         // defining the bottom sheet layout
         bottomSheet = findViewById(R.id.bottom_sheet_layout)
         recyclerView =findViewById(R.id.main_rv)
+        bottomSheet = bottom_sheet_layout
     }
 
     private fun initActivity() {
         // defining the bottom sheet behaviour
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
-
-        // defining the buttons inside the bottom sheet
-        // DATA BINDING IS NOT USED HERE, AS THE LAYOUT NEEDS TO BE A COORDINATOR LAYOUT
-        bottomSheet.apply {
-            documentScanButton = findViewById(R.id.document_scan_btn)
-            qrScanButton = findViewById(R.id.qr_scan_btn)
-        }
 
         // setting initial state of bottom sheet to hidden
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
@@ -134,15 +129,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,NavigationView.On
 
     // attaching on click listeners
     private fun attachOnClickListeners() {
-        documentScanButton.setOnClickListener(this)
-        qrScanButton.setOnClickListener(this)
-        mainBinding.floatingActionButton.setOnClickListener(this)
-        mainBinding.mainActivityLayout.setOnClickListener(this)
+        document_scan_btn.setOnClickListener(this)
+        qr_scan_btn.setOnClickListener(this)
+        floating_action_button.setOnClickListener(this)
+        main_activity_layout.setOnClickListener(this)
     }
 
     // toggling bottom sheet visibility when fab is pressed
     private fun onFabClicked() {
-        if (bottomSheetBehavior.state == 2 || bottomSheetBehavior.state == 5)
+        if (bottomSheetBehavior.state == 2 ||
+            bottomSheetBehavior.state == 5)
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         else
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN

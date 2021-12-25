@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <dimen name="qr_corner_dim_50dp">50dp</dimen>
     <dimen name="qr_box_radius_0dp">0dp</dimen>
     <dimen name="qr_box_ratio_1">1</dimen>

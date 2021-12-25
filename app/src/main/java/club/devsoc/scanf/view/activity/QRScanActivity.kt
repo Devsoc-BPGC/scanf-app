@@ -6,6 +6,12 @@ import android.os.Bundle
 import android.widget.Toast
 import club.devsoc.scanf.R
 import com.budiyev.android.codescanner.*
+import club.devsoc.scanf.R
+import com.budiyev.android.codescanner.AutoFocusMode
+import com.budiyev.android.codescanner.CodeScanner
+import com.budiyev.android.codescanner.DecodeCallback
+import com.budiyev.android.codescanner.ErrorCallback
+import com.budiyev.android.codescanner.ScanMode
 import kotlinx.android.synthetic.main.activity_q_r_scan.*
 import pub.devrel.easypermissions.EasyPermissions
 
@@ -54,7 +60,6 @@ class QRScanActivity : AppCompatActivity() {
 
         this.scanner_view.setOnClickListener{
             codeScanner.startPreview();
-
         }
 
 
