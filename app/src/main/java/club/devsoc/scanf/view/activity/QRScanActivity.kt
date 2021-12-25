@@ -3,6 +3,9 @@ package club.devsoc.scanf.view.activity
 import android.Manifest
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
+import club.devsoc.scanf.R
+import com.budiyev.android.codescanner.*
 import club.devsoc.scanf.R
 import com.budiyev.android.codescanner.AutoFocusMode
 import com.budiyev.android.codescanner.CodeScanner
@@ -20,9 +23,11 @@ class QRScanActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_q_r_scan)
+        val scannerView = findViewById<CodeScannerView>(R.id.scanner_view)
+        codeScanner = CodeScanner(this,scannerView);
 
         if (EasyPermissions.hasPermissions(this, Manifest.permission.CAMERA)) {
-            codeScanner.startPreview();
+                codeScanner.startPreview();
         } else {
             EasyPermissions.requestPermissions(this,
                 getString(R.string.camera_permission_text),
@@ -42,11 +47,14 @@ class QRScanActivity : AppCompatActivity() {
         codeScanner.decodeCallback = DecodeCallback {
             runOnUiThread {
                 //scanned info is stored in default variable 'it'.
+                Toast.makeText(this, "Scan result: ${it.text}", Toast.LENGTH_LONG).show()
             }
         }
         codeScanner.errorCallback = ErrorCallback { // or ErrorCallback.SUPPRESS
             runOnUiThread {
 //                error message stored in it.message
+                Toast.makeText(this, "Camera initialization error: ${it.message}",
+                    Toast.LENGTH_LONG).show()
             }
         }
 
