@@ -4,7 +4,6 @@ import android.Manifest
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import club.devsoc.scanf.R
 import com.budiyev.android.codescanner.*
 import club.devsoc.scanf.R
 import com.budiyev.android.codescanner.AutoFocusMode

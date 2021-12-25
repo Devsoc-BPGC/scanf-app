@@ -14,16 +14,19 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import club.devsoc.scanf.R
-import club.devsoc.scanf.databinding.ActivityMainBinding
+//import club.devsoc.scanf.databinding.ActivityMainBinding
 import club.devsoc.scanf.model.PdfModel
 import club.devsoc.scanf.view.adapter.PdfRvAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.navigation.NavigationView
 import com.scanlibrary.ScanConstants
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.bottom_sheet.*
 import java.io.File
 
 class MainActivity : AppCompatActivity(), View.OnClickListener,NavigationView.OnNavigationItemSelectedListener {
 
+    private var drawerLayout: DrawerLayout? = null
     private lateinit var bottomSheet : ConstraintLayout
     private lateinit var bottomSheetBehavior :
             BottomSheetBehavior<ConstraintLayout>

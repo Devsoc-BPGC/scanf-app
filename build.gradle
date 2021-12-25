@@ -28,7 +28,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.3'
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.72'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10'
         classpath "org.jlleitschuh.gradle:ktlint-gradle:8.2.0"
     }
 }
@@ -51,7 +51,7 @@ task clean(type: Delete) {
 ext {
 
     // Kotlin dependencies
-    kotlinVersion = '1.3.72'
+    kotlinVersion = '1.6.10'
     // Retrofit dependencies
     retrofitVersion = '2.4.0'
     // Lifecycle dependencies
