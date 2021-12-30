@@ -75,6 +75,7 @@ class QRScanActivity : AppCompatActivity() {
                             val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                             val clip = ClipData.newPlainText("label",it.text)
                             clipboard.setPrimaryClip(clip)
+                        Toast.makeText(applicationContext, "Copied to clipboard", Toast.LENGTH_LONG).show()
                     }
                 }.create().show()
             }
