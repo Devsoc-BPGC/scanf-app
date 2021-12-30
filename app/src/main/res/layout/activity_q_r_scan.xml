@@ -22,5 +22,4 @@
         app:frameSize="@dimen/qr_frame_size_0.75"
         app:frameThickness="@dimen/qr_frame_thickness_2dp"
         app:maskColor="#77000000"/>
-
 </RelativeLayout>
