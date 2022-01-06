@@ -87,7 +87,8 @@ dependencies {
     //CameraViewx dependencies
     implementation "com.priyankvasa.android:cameraview-ex:3.5.5-alpha"
 
-    implementation project(path: ':scanlibrary')
+    //implementation project(path: ':scanlibrary')
+    implementation "com.github.NeutrinosPlatform:scanlibrary:3.3"
 
     implementation "androidx.recyclerview:recyclerview:1.2.1"
     // For control over item selection of both touch and mouse driven selection
