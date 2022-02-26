@@ -3,4 +3,9 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+
+    <color name="sf_dark_blue">#232F34</color>
+    <color name="sf_med_blue">#244955</color>
+    <color name="sf_silver">#6E96A9</color>
+    <color name="sf_gold">#F9AA33</color>
 </resources>

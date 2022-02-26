@@ -12,4 +12,8 @@
     <dimen name="main_activity_fab_dims">60dp</dimen>
     <dimen name="main_activity_fab_margin">20dp</dimen>
 
+    //Home fragment
+
+    <dimen name="home_bottom_nav_bar_height">100dp</dimen>
+
 </resources>
