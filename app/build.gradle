@@ -95,5 +95,12 @@ dependencies {
     // For control over item selection of both touch and mouse driven selection
 //    implementation "androidx.recyclerview:recyclerview-selection:1.1.0"
 
+    def camerax_version = "1.0.0-beta12"
+// CameraX core library using camera2 implementation
+    implementation "androidx.camera:camera-camera2:$camerax_version"
+// CameraX Lifecycle Library
+    implementation "androidx.camera:camera-lifecycle:$camerax_version"
+// CameraX View class
+    implementation "androidx.camera:camera-view:1.0.0-alpha19"
 
 }
