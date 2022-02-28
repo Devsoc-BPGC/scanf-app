@@ -1,6 +1,7 @@
 package club.devsoc.scanf.view.fragment
 
 import android.os.Bundle
+import android.transition.TransitionInflater
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,12 +12,15 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.findNavController
 import club.devsoc.scanf.R
+import club.devsoc.scanf.databinding.HomeFragmentBinding
 import club.devsoc.scanf.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.home_fragment.*
 
 class HomeFragment : Fragment() {
-
+    lateinit var binding: HomeFragmentBinding
     companion object {
         fun newInstance() = HomeFragment()
     }
@@ -27,7 +31,8 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.home_fragment, container, false)
+        binding = HomeFragmentBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -35,6 +40,13 @@ class HomeFragment : Fragment() {
         startCamera()
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         // TODO: Use the ViewModel
+        val extras = FragmentNavigatorExtras(binding.selectedDocIv to "rd_image_big")
+        binding.selectedDocIv.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_recentDocumentFragment,
+            null,
+            null,
+            extras)
+        }
     }
 
     private fun startCamera() {

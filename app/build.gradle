@@ -103,4 +103,19 @@ dependencies {
 // CameraX View class
     implementation "androidx.camera:camera-view:1.0.0-alpha19"
 
+
+
+    // Kotlin
+    implementation("androidx.navigation:navigation-fragment-ktx:2.4.1")
+    implementation("androidx.navigation:navigation-ui-ktx:2.4.1")
+
+    // Feature module Support
+    implementation("androidx.navigation:navigation-dynamic-features-fragment:2.4.1")
+
+    // Testing Navigation
+    androidTestImplementation("androidx.navigation:navigation-testing:2.4.1")
+
+    // Jetpack Compose Integration
+    implementation("androidx.navigation:navigation-compose:2.4.1")
+
 }
