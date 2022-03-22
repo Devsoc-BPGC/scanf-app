@@ -16,4 +16,7 @@
     <string name="qr_scanner">QR Scanner</string>
     <string name="image_path">image_path</string>
 
+<!--    Home Fragment-->
+    <string name="heading_home_fragment">QR Code</string>
+
 </resources>
