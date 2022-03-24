@@ -19,12 +19,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             >
+
             <ImageView
+                android:id="@+id/pdf_files_imgvw"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:src="@drawable/ic_pdf"
-                android:id="@+id/pdf_files_imgvw"
-                />
+                android:src="@drawable/ic_pdf" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
