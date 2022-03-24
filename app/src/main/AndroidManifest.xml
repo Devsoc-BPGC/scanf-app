@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="club.devsoc.scanf">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-feature android:name="android.hardware.camera.any" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -24,6 +25,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.activity.ImageActivity" />
+<!--        <activity android:name=".view.activity.GalleryActivity" />-->
         <activity android:name=".view.activity.QRScanActivity" />
         <activity android:name=".view.activity.MainActivity"/>
 
