@@ -26,9 +26,11 @@ import club.devsoc.scanf.model.GalleryModel
 import club.devsoc.scanf.view.adapter.GalleryAdapter
 import club.devsoc.scanf.viewmodel.HomeViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.bottom_sheet.*
 import kotlinx.android.synthetic.main.gallery_bottom_sheet.*
+import kotlinx.android.synthetic.main.gallery_bottom_sheet.view.*
 import kotlinx.android.synthetic.main.home_fragment.*
 
 private lateinit var bottomSheetBehavior :
@@ -69,16 +71,19 @@ class HomeFragment : Fragment() {
             extras)
         }
         binding.galleryBtn.setOnClickListener{ view ->
-//            val myIntent = Intent(context, GalleryActivity::class.java)
-//            startActivity(myIntent)
 
             openGallery()
         }
 
-        getImages()
+        binding.root.gallery_exit.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        }
 
-        setGallery()
-        bottomSheet()
+
+        getImages() // Gets all image URIs from gallery
+
+        setGallery() // sets the recyclerview for gallery
+        bottomSheet() // Initializes bottom sheet
 
     }
 
@@ -126,7 +131,12 @@ class HomeFragment : Fragment() {
     }
 
     private fun openGallery() {
-        Log.e("yeet", "YEEEEEET")
+
+        val view = layoutInflater.inflate(R.layout.gallery_bottom_sheet, null)
+
+        view.gallery_exit.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        }
 
         if (bottomSheetBehavior.state == 2 ||
             bottomSheetBehavior.state == 5)
@@ -137,15 +147,13 @@ class HomeFragment : Fragment() {
     }
 
     private fun bottomSheet() {
-        val view = layoutInflater.inflate(R.layout.gallery_bottom_sheet, null)
-
-        view.background = ResourcesCompat.getDrawable(resources, R.drawable.rounded_dialog, null)
 
         bottomSheetBehavior = BottomSheetBehavior.from(gallery_layout)
 
         // setting initial state of bottom sheet to hidden
         bottomSheetBehavior.isHideable = true;
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+
     }
 
     private fun getImages() {
@@ -162,10 +170,8 @@ class HomeFragment : Fragment() {
             imageProjection,
             null,
             null,
-            null
+            imageSortOrder
         )
-
-        Log.e("yeet", cursor?.count.toString())
 
         photoList = ArrayList(3)
         if(cursor != null && cursor.count != 0) {
@@ -184,18 +190,9 @@ class HomeFragment : Fragment() {
 
 
             }
-
-
-//            Glide.with(binding.root).load(contentUri).into(selected_doc_iv)
-//            Log.e("yeet", contentUri.toString())
-
-
         }
-        else {
-            Log.e("yeet", "Ohno")
-        }
-
 
     }
+
 
 }

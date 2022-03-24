@@ -3,9 +3,11 @@ package club.devsoc.scanf.view.activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import club.devsoc.scanf.R
 import club.devsoc.scanf.view.fragment.HomeFragment
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 
 class HomeActivity : AppCompatActivity() {
 
@@ -25,4 +27,5 @@ class HomeActivity : AppCompatActivity() {
             }
 
     }
+
 }
