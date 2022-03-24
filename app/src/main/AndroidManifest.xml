@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.activity.ImageActivity" />
-        <activity android:name=".view.activity.GalleryActivity" />
+<!--        <activity android:name=".view.activity.GalleryActivity" />-->
         <activity android:name=".view.activity.QRScanActivity" />
         <activity android:name=".view.activity.MainActivity"/>
 

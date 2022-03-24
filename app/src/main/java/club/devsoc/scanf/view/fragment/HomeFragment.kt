@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import club.devsoc.scanf.R
 import club.devsoc.scanf.databinding.HomeFragmentBinding
 import club.devsoc.scanf.model.GalleryModel
-import club.devsoc.scanf.view.activity.GalleryActivity
+//import club.devsoc.scanf.view.activity.GalleryActivity
 import club.devsoc.scanf.view.adapter.GalleryAdapter
 import club.devsoc.scanf.viewmodel.HomeViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
